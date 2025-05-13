@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 00:17:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/14 01:56:49 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ void	Game::addAt( int y, int x, chtype ch) {
 }
 
 chtype	Game::getInput( void ) {
+	noecho();
+	curs_set(FALSE);
+    keypad(stdscr, TRUE);
+    nodelay(this->_board, TRUE);
+	
 	return (wgetch(this->_board));
 }
 
@@ -63,8 +68,6 @@ bool	Game::isGameOver( void ) {
 }
 
 void	Game::processInput( void ) {
-	noecho();
-	
 	chtype	input = this->getInput();
 	(void) input;
 }

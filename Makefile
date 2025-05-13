@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 07:22:39 by tchartie          #+#    #+#              #
-#    Updated: 2025/05/13 23:08:24 by tchartie         ###   ########.fr        #
+#    Updated: 2025/05/14 01:08:48 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,10 @@ WHITE			=	\033[0;97m
 
 SRC_DIR 		= 	src/
 SRC_NAME 		=	main.cpp \
-					Game.cpp	
+					Game.cpp \
+					Scoreboard.cpp \
+					Entity.cpp \
+					Player.cpp
 
 OBJ_DIR 		=	obj/
 OBJ_NAME		=	$(SRC_NAME:.cpp=.o)
