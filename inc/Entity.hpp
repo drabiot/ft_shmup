@@ -1,33 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Entity.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 00:20:33 by tchartie         ###   ########.fr       */
+/*   Created: 2025/05/13 23:00:21 by tchartie          #+#    #+#             */
+/*   Updated: 2025/05/13 23:01:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Game.hpp"
+#ifndef ENTITY_HPP
+# define ENTITY_HPP
 
-int	main(int argc, char **argv) {
-	(void)argc;
-	(void)argv;
-	
-	noecho();
-	
-	Game	game;
-	game.initializeBorder();
+#endif //ENTITY_HPP
 
-	while (!game.isGameOver()) {
-		game.processInput();
-		game.updateGame();
-		game.refreshBorder();
-	}
-
-	getch();
-
-	return (0);
-}

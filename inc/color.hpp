@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   color.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 00:20:33 by tchartie         ###   ########.fr       */
+/*   Created: 2024/11/27 19:48:40 by tchartie          #+#    #+#             */
+/*   Updated: 2024/11/27 19:49:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Game.hpp"
+#ifndef COLOR_HPP
+# define COLOR_HPP
 
-int	main(int argc, char **argv) {
-	(void)argc;
-	(void)argv;
-	
-	noecho();
-	
-	Game	game;
-	game.initializeBorder();
+# define BASE_COLOR	"\033[0m"
+# define GRAY 		"\033[0;90m"
+# define RED 		"\033[0;91m"
+# define GREEN 		"\033[0;92m"
+# define YELLOW 	"\033[0;93m"
+# define BLUE 		"\033[0;94m"
+# define MAGENTA	"\033[0;95m"
+# define CYAN 		"\033[0;96m"
+# define WHITE		"\033[0;97m"
 
-	while (!game.isGameOver()) {
-		game.processInput();
-		game.updateGame();
-		game.refreshBorder();
-	}
-
-	getch();
-
-	return (0);
-}
+#endif //COLOR_HPP

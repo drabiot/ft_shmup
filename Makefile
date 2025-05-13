@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 07:22:39 by tchartie          #+#    #+#              #
-#    Updated: 2025/05/13 22:31:38 by tchartie         ###   ########.fr        #
+#    Updated: 2025/05/13 23:08:24 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ CC 				= 	c++
 
 INC				= 	inc/
 CFLAGS 			= 	-I$(INC) -Wall -Werror -Wextra -std=c++98 -g
+LDFLAGS			= 	-lncurses
 
 MAKEFLAGS		=	--no-print-directory
 
@@ -40,7 +41,8 @@ WHITE			=	\033[0;97m
 #========== SOURCES ===========#
 
 SRC_DIR 		= 	src/
-SRC_NAME 		=	main.cpp		
+SRC_NAME 		=	main.cpp \
+					Game.cpp	
 
 OBJ_DIR 		=	obj/
 OBJ_NAME		=	$(SRC_NAME:.cpp=.o)
@@ -49,7 +51,7 @@ OBJ				=	$(patsubst %, $(OBJ_DIR)%, $(OBJ_NAME))
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJ)
 	@echo "$(GREEN)ft_shmup successfully compiled! $(BASE_COLOR)"
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp
