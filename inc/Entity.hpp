@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:21 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 00:59:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:00:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class Entity {
 		virtual ~Entity( void );
 
 		size_t	getPosX( void );
-		size_t	getPoxY( void );
+		size_t	getPosY( void );
 		size_t	getLife( void );
 
 		void	setPosX( size_t newX );

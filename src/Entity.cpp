@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:42:20 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 00:50:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:59:43 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	Entity::getPosX( void ) {
 	return (this->_posX);
 }
 
-size_t	Entity::getPoxY( void ) {
+size_t	Entity::getPosY( void ) {
 	return (this->_posY);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 01:42:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:34:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char **argv) {
 		game.updateGame();
 		game.refreshBorder();
 		scoreboard.refreshScoreboard();
+		doupdate();
 
 		usleep(FRAME_DELAY);
 	}

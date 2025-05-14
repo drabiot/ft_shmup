@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 01:37:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:45:56 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ class Game {
 
 		void	processInput( void );
 		void	updateGame( void );
+		void	createBackground( void );
 	private:
 		WINDOW		*_board;
 		bool		_gameOver;
-		//Scoreboard	_scoreboard;
+		Player		_player;
 
 		void	addBorder( void );
 		void	clearBorder( void );
