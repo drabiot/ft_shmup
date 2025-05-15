@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 14:10:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:03:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ typedef std::string str;
 # define WIDTH			300
 # define FRAME_DELAY	16000
 # define M_PI			3.14159265
+
+# define SPACE          ' '
+# define BASE           '.'
+# define DETAIL         '%'
+# define FINE           '*'
+# define FIRST          '@'
 
 double  ft_sin( double x );
 

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 15:49:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:32:11 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,12 @@ void	Game::updateGame( void ) {
 	this->createBackground();
 
 	//Create Player
-	init_pair(2, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_BLACK, COLOR_CYAN);
 	wattron(this->_board, COLOR_PAIR(2));
 	wattron(this->_board, A_BOLD);
+	wattron(this->_board, A_BLINK);
 	this->addAt(this->_player.getPosY(), this->_player.getPosX(), '>');
+	wattroff(this->_board, A_BLINK);
 	wattroff(this->_board, A_BOLD);
 	wattroff(this->_board, COLOR_PAIR(2));
 	
@@ -113,9 +115,21 @@ void	Game::updateGame( void ) {
 void	Game::createBackground( void ) {
 	wattroff(this->_board, COLOR_PAIR(3));
 
-	static char background[HEIGHT][WIDTH];
+	static char backgroundBase[HEIGHT][WIDTH];
+	static char backgroundDetail[HEIGHT][WIDTH];
+	static char backgroundFine[HEIGHT][WIDTH];
+	static char backgroundFirst[HEIGHT][WIDTH];
 	static bool initialized = false;
-	static int index = 0;
+	static int	index = 0;
+
+
+	static int	indexAddBase = 0;
+	static int	indexAddDetail = 0;
+	static int	indexAddFine = 0;
+
+	static int	indexBase = 0;
+	static int	indexDetail = 0;
+	static int	indexFine = 0;
 
 	//Randomly Generate Background
 	if (!initialized) {
@@ -124,18 +138,10 @@ void	Game::createBackground( void ) {
 		double fineFreq   = (2.0 * M_PI) / 100;
 		double firstFreq   = (2.0 * M_PI) / 50;
 
-		double baseAmp    = HEIGHT / (std::rand() % 10 + 1);
-		if (baseAmp < HEIGHT / 5)
-			baseAmp = HEIGHT / 5;
-		double detailAmp  = HEIGHT / (std::rand() % 15 + 1);
-		if (detailAmp < HEIGHT / 10)
-			detailAmp = HEIGHT / 10;
-		double fineAmp    = HEIGHT / (std::rand() % 30 + 1);
-		if (fineAmp > HEIGHT / 20)
-			fineAmp = HEIGHT / 20;
-		double firstAmp    = HEIGHT / (std::rand() % 45 + 1);
-		if (firstAmp > HEIGHT / 30)
-			firstAmp = HEIGHT / 30;
+		double baseAmp = HEIGHT / 5;
+		double detailAmp = HEIGHT / 10;
+		double fineAmp = HEIGHT / 20;
+		double firstAmp = HEIGHT / 30;
 
 
 		double offset = HEIGHT / 2.0;
@@ -149,33 +155,76 @@ void	Game::createBackground( void ) {
 
 			for (int y = 0; y < HEIGHT; ++y) {
 				if (y < base)
-					background[y][x] = ' ';
+					backgroundBase[y][x] = SPACE;
 				else
-					background[y][x] = '.';
-				if (y >= detail)
-					background[y][x] = '%';
-				if (y >= fine)
-					background[y][x] = 'X';
-				if (y >= first)
-					background[y][x] = '@';
+					backgroundBase[y][x] = BASE;
+				if (y < detail)
+					backgroundDetail[y][x] = SPACE;
+				else
+					backgroundDetail[y][x] = DETAIL;
+				if (y < fine)
+					backgroundFine[y][x] = SPACE;
+				else
+					backgroundFine[y][x] = FINE;
+				if (y < first)
+					backgroundFirst[y][x] = SPACE;
+				else
+					backgroundFirst[y][x] = FIRST;
 			}
 		}
 		initialized = true;
 	}
 
 	//Scroll Background
-	if (index % 1 == 0) {
-		init_pair(4, COLOR_GREEN, COLOR_BLACK);
-		wattron(this->_board, COLOR_PAIR(4));
-		for (int i = 0; i < HEIGHT; ++i) {
-			for (int j = 0; j < LENGTH; ++j) {
-				int wrapped_col = (j + index) % WIDTH;
-				this->addAt(i, j, background[i][wrapped_col]);
-			}
+	init_pair(4, COLOR_GREEN, COLOR_BLACK);
+	init_pair(5, COLOR_YELLOW, COLOR_BLACK);
+
+		
+	for (int i = 0; i < HEIGHT; ++i) {
+		for (int j = 0; j < LENGTH; ++j) {
+			int wrapped_col = (j + indexBase) % WIDTH;
+				wattron(this->_board, COLOR_PAIR(5));
+				this->addAt(i, j, backgroundBase[i][wrapped_col]);
+				wattroff(this->_board, COLOR_PAIR(5));
 		}
-		wattroff(this->_board, COLOR_PAIR(4));
+	}
+	for (int i = 0; i < HEIGHT; ++i) {
+		for (int j = 0; j < LENGTH; ++j) {
+			int wrapped_col = (j + indexDetail) % WIDTH;
+				wattron(this->_board, COLOR_PAIR(5));
+				if (backgroundDetail[i][wrapped_col] != SPACE)
+					this->addAt(i, j, backgroundDetail[i][wrapped_col]);
+				wattroff(this->_board, COLOR_PAIR(5));
+		}
+	}
+	for (int i = 0; i < HEIGHT; ++i) {
+		for (int j = 0; j < LENGTH; ++j) {
+			int wrapped_col = (j + indexFine) % WIDTH;
+				wattron(this->_board, COLOR_PAIR(4));
+				if (backgroundFine[i][wrapped_col] != SPACE)
+					this->addAt(i, j, backgroundFine[i][wrapped_col]);
+				wattroff(this->_board, COLOR_PAIR(4));
+		}
+	}
+	for (int i = 0; i < HEIGHT; ++i) {
+		for (int j = 0; j < LENGTH; ++j) {
+			int wrapped_col = (j + index) % WIDTH;
+				wattron(this->_board, COLOR_PAIR(4));
+				if (backgroundFirst[i][wrapped_col] != SPACE)
+					this->addAt(i, j, backgroundFirst[i][wrapped_col]);
+				wattroff(this->_board, COLOR_PAIR(4));
+		}
 	}
 	index++;
+	indexAddBase++;
+	indexAddDetail++;
+	indexAddFine++;
+	if (indexAddBase % 15 == 0)
+		indexBase++;
+	if (indexAddDetail % 7 == 0)
+		indexDetail++;
+	if (indexAddFine % 3 == 0)
+		indexFine++;
 
 	//Create Upper & Lower Border
 	this->addBorder();
