@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 17:32:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:42:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,13 @@ void	Game::updateGame( void ) {
 
 	//Create Player
 	init_pair(2, COLOR_BLACK, COLOR_CYAN);
-	wattron(this->_board, COLOR_PAIR(2));
+	//wattron(this->_board, COLOR_PAIR(2));
 	wattron(this->_board, A_BOLD);
-	wattron(this->_board, A_BLINK);
-	this->addAt(this->_player.getPosY(), this->_player.getPosX(), '>');
-	wattroff(this->_board, A_BLINK);
+	//wattron(this->_board, A_BLINK);
+	this->displayPlayer();
+	//wattroff(this->_board, A_BLINK);
 	wattroff(this->_board, A_BOLD);
-	wattroff(this->_board, COLOR_PAIR(2));
+	//wattroff(this->_board, COLOR_PAIR(2));
 	
 	this->refreshBorder();
 }
@@ -235,4 +235,8 @@ void	Game::createBackground( void ) {
 		this->addAt(HEIGHT - 1, i, ' ');
 	}
 	wattroff(this->_board, COLOR_PAIR(3));
+}
+
+void	Game::displayPlayer( void ) {
+	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛸");
 }

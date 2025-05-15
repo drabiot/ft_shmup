@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:59 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 15:45:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:36:11 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	Scoreboard::updateScoreboard( void ) {
 	size_t	padding = 1;
 	for (; i < this->_player.getLife(); ++i) {
 		wattron(this->_scoreboard, COLOR_PAIR(1));
-		mvwprintw(this->_scoreboard, 2, i + padding, "<3");
+		mvwprintw(this->_scoreboard, 2, i + padding, "❤️");
 		padding += 2;
 		wattroff(this->_scoreboard, COLOR_PAIR(1));
 	}

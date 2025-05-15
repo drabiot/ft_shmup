@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 16:03:24 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:34:40 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <iostream>
 # include <string>
-# include <ncurses.h>
+# include <ncursesw/ncurses.h>
 # include <unistd.h>
 # include <cstdlib>
 # include <ctime>

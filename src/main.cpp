@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 15:48:15 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:31:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int argc, char **argv) {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 	cbreak();
+	setlocale(LC_ALL, "");
 	
 	std::srand(std::time(0));
 

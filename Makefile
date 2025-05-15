@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 07:22:39 by tchartie          #+#    #+#              #
-#    Updated: 2025/05/15 14:09:02 by tchartie         ###   ########.fr        #
+#    Updated: 2025/05/15 18:34:48 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CC 				= 	c++
 
 INC				= 	inc/
 CFLAGS 			= 	-I$(INC) -Wall -Werror -Wextra -std=c++98 -g
-LDFLAGS			= 	-lncurses
+LDFLAGS			= 	-lncursesw
 
 MAKEFLAGS		=	--no-print-directory
 
