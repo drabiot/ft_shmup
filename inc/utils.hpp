@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 18:34:40 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:56:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <cstdlib>
 # include <ctime>
+# include <sstream>
 
 # include "color.hpp"
 

@@ -6,11 +6,14 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 19:00:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:25:58 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
+
+static str intToStr(int value);
+//static str doubleToStr(double value);
 
 Game::Game( void ) {
 	size_t	xMax;
@@ -107,14 +110,10 @@ void	Game::updateGame( void ) {
 
 	//Create Player
 	init_pair(2, COLOR_BLACK, COLOR_CYAN);
-	//wattron(this->_board, COLOR_PAIR(2));
 	wattron(this->_board, A_BOLD);
-	//wattron(this->_board, A_BLINK);
 	this->displayPlayer();
-	//wattroff(this->_board, A_BLINK);
 	wattroff(this->_board, A_BOLD);
-	//wattroff(this->_board, COLOR_PAIR(2));
-	
+
 	this->refreshBorder();
 }
 
@@ -246,3 +245,67 @@ void	Game::createBackground( void ) {
 void	Game::displayPlayer( void ) {
 	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛸");
 }
+
+void	Game::displayEnd( void ) {
+	this->clearBorder();
+	for (int i = 0; i < HEIGHT; ++i) {
+		for (int j = 0; j < LENGTH; ++j) {
+				this->addAt(i, j, ' ');
+		}
+	}
+	this->addBorder();
+	wattron(this->_board, A_BOLD);
+
+	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⢀⣴⣿⡶⠀⣾⣿⣿⡿⠟⠛⠁");
+	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 20, "⠀⠀⢀⣴⣾⣿⡿⠿⠿⠿⠇⠀⠀⣸⣿⣿⣿⡆⠀⠀⢰⣿⣿⣿⣷⣼⣿⣿⣿⡿⢀⣿⣿⡿⠟⠛⠁  ");
+	mvwprintw(this->_board, HEIGHT / 2 - 7, LENGTH / 2 - 20, "⠀⣴⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⢠⣿⣿⣹⣿⣿⣿⣿⣿⣿⡏⢻⣿⣿⢿⣿⣿⠃⣼⣿⣯⣤⣴⣶⣿⡤⠀");
+	mvwprintw(this->_board, HEIGHT / 2 - 6, LENGTH / 2 - 20, "⣼⣿⠏⠀⣀⣠⣤⣶⣾⣷⠄⣰⣿⣿⡿⠿⠻⣿⣯⣸⣿⡿⠀⠀⠀⠁⣾⣿⡏⢠⣿⣿⠿⠛⠋⠉⠀⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 - 5, LENGTH / 2 - 20, "⣿⣿⠲⢿⣿⣿⣿⣿⡿⠋⢰⣿⣿⠋⠀⠀⠀⢻⣿⣿⣿⠇⠀⠀⠀⠀⠙⠛⠀⠀⠉⠁⠀⠀⠀⠀⠀  ");
+	mvwprintw(this->_board, HEIGHT / 2 - 4, LENGTH / 2 - 20, "⠹⢿⣷⣶⣿⣿⠿⠋⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ");
+	mvwprintw(this->_board, HEIGHT / 2 - 3, LENGTH / 2 - 20, "⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣦⣤⡀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 - 2, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣠⡇⢰⣶⣶⣾⡿⠷⣿⣿⣿⡟⠛⣉⣿⣿⣿⠆");
+	mvwprintw(this->_board, HEIGHT / 2 - 1, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⡎⣿⣿⣦⠀⠀⠀⢀⣤⣾⠟⢀⣿⣿⡟⣁⠀⠀⣸⣿⣿⣤⣾⣿⡿⠛⠁⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + 0, LENGTH / 2 - 20, "⠀⠀⠀⠀⣠⣾⣿⡿⠛⠉⢿⣦⠘⣿⣿⡆⠀⢠⣾⣿⠋⠀⣼⣿⣿⣿⠿⠷⢠⣿⣿⣿⠿⢻⣿⣧⠀⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 20, "⠀⠀⠀⣴⣿⣿⠋⠀⠀⠀⢸⣿⣇⢹⣿⣷⣰⣿⣿⠃⠀⢠⣿⣿⢃⣀⣤⣤⣾⣿⡟⠀⠀⠀⢻⣿⣆⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 20, "⠀⠀⠀⣿⣿⡇⠀⠀⢀⣴⣿⣿⡟⠀⣿⣿⣿⣿⠃⠀⠀⣾⣿⣿⡿⠿⠛⢛⣿⡟⠀⠀⠀⠀⠀⠻⠿⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 20, "⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + 4, LENGTH / 2 - 20, "⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+
+	wattron(this->_board, A_BLINK);
+	mvwprintw(this->_board, HEIGHT / 2 + 6, LENGTH / 2 - 10, "Press any Key to Quit!");
+	wattroff(this->_board, A_BLINK);
+
+	mvwprintw(this->_board, HEIGHT / 2 + 10, LENGTH / 2 - 20, "Score:");
+	mvwprintw(this->_board, HEIGHT / 2 + 10, LENGTH / 2 + 14, "Time:");
+
+	wattroff(this->_board, A_BOLD);
+	
+	const str	scoreDisplay = intToStr(this->_player.getScore());
+	int			padding = scoreDisplay.size();
+	if (padding % 2 != 0)
+		padding++;
+	mvwprintw(this->_board, HEIGHT / 2 + 11, LENGTH / 2 - 20 + 3 - (padding / 2), "%s", scoreDisplay.c_str());
+
+	//double	endTime = static_cast<double>(this->_player.getTimeSurvived() - std::clock()) / CLOCKS_PER_SEC;
+	//const str	timeDisplay = doubleToStr(endTime);
+	//padding = timeDisplay.size();
+	//if (padding % 2 != 0)
+	//	padding++;
+	//mvwprintw(this->_board, HEIGHT / 2 + 11, LENGTH / 2 + 14 + 3 - (padding / 2), "%s", scoreDisplay.c_str());
+
+	this->refreshBorder();
+	doupdate();
+}
+
+static str intToStr(int value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
+/*static str doubleToStr(double value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}*/
