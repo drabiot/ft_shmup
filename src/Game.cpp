@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 18:42:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:00:59 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,16 @@ Game::Game( void ) {
 	refresh();
 	getmaxyx(stdscr, yMax, xMax);
 	this->_board = newwin(HEIGHT, LENGTH, (yMax / 2) - (HEIGHT / 2), (xMax / 2) - (LENGTH / 2));
+	if (!this->_board)
+		throw std::runtime_error("Can't initialize Game window");
 
 	this->_gameOver = false;
 }
 
 Game::~Game( void ) {
 	//End the Game Screen
-	delwin(this->_board);
+	if (this->_board)
+		delwin(this->_board);
 	endwin();
 }
 
@@ -87,6 +90,9 @@ void	Game::processInput( void ) {
 		case 'a':
 			if (this->_player.getPosX() - 1 > 0)
 				this->_player.setPosX(this->_player.getPosX() - 1);
+			break;
+		case 'p':
+			this->_gameOver = true;
 			break;
 		default:
 			break;

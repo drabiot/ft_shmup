@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:59 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 18:36:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:04:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ Scoreboard::Scoreboard( void ) {
 
 	getmaxyx(stdscr, yMax, xMax);
 	this->_scoreboard = newwin(4, LENGTH, (yMax / 2) - (HEIGHT / 2) + HEIGHT, (xMax / 2) - (LENGTH / 2));
+	if (!this->_scoreboard)
+		throw std::runtime_error("Can't initialize Scoreboard window");
 }
 
 Scoreboard::Scoreboard( cref(Scoreboard) src ) {
@@ -33,7 +35,8 @@ Scoreboard &Scoreboard::operator = ( cref(Scoreboard) rhs ) {
 }
 
 Scoreboard::~Scoreboard( void ) {
-	delwin(this->_scoreboard);
+	if (this->_scoreboard)
+		delwin(this->_scoreboard);
 }
 
 void	Scoreboard::initialize( void ) {

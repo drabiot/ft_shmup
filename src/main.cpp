@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 18:31:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:59:23 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,30 @@ int	main(int argc, char **argv) {
 	
 	std::srand(std::time(0));
 
-	Game		game;
-	Scoreboard	scoreboard;
-	game.initializeBorder();
-	scoreboard.initialize();
+	try {
+		Game		game;
+		Scoreboard	scoreboard;
 
-	while (!game.isGameOver()) {
-		game.processInput();
-		game.updateGame();
-		game.refreshBorder();
-		scoreboard.refreshScoreboard();
-		doupdate();
+		game.initializeBorder();
+		scoreboard.initialize();
 
-		usleep(FRAME_DELAY);
+		while (!game.isGameOver()) {
+			game.processInput();
+			game.updateGame();
+			game.refreshBorder();
+			scoreboard.refreshScoreboard();
+			doupdate();
+
+			usleep(FRAME_DELAY);
+		}
+	
+	//End Menu with total Score & Time Survivec
+	//getch();
+
+	} catch (const std::exception& e) {
+		endwin();
+    	ERROR RED AND e.what() CENDL;
 	}
-
-	getch();
 
 	return (0);
 }
