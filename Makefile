@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 07:22:39 by tchartie          #+#    #+#              #
-#    Updated: 2025/05/14 01:08:48 by tchartie         ###   ########.fr        #
+#    Updated: 2025/05/15 14:09:02 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ WHITE			=	\033[0;97m
 
 SRC_DIR 		= 	src/
 SRC_NAME 		=	main.cpp \
+					utils.cpp \
 					Game.cpp \
 					Scoreboard.cpp \
 					Entity.cpp \

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 14:40:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:37:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,58 +110,73 @@ void	Game::updateGame( void ) {
 
 void	Game::createBackground( void ) {
 	wattroff(this->_board, COLOR_PAIR(3));
-	//Create Background
-	char background[40][300];
 
-    for (int i = 0; i < 40; i++) {
-        for (int j = 0; j < 300; j++) {
-            background[i][j] = ' ';
-        }
-    }
-	const char *art[] = {
-	".......                                                                                      ..............                                                                                      ..............                                                                                      .......",
-	"..........                                                                   .................................                                                                   .................................                                                                   .......................",
-	".............                                                          ..........................................                                                          ..........................................                                                          .............................",
-	"................ . . . .. .. . .                                 .. ................................................ . . . .. .. . .                                 .. ................................................ . . . .. .. . .                                 .. ................................",
-	"...........................................                ....................................................................................                ....................................................................................                .........................................",
-	"............................................................................................................................................................................................................................................................................................................",
-	"............................................................................................................................................................................................................................................................................................................",
-	"............................................................................................................................................................................................................................................................................................................",
-	"xxx............................................................................................xxxxxxxx............................................................................................xxxxxxxx............................................................................................xxxxx",
-	"xxxxxxxx..............................................................................xxxxxxxxxxxxxxxxxxxxxx..............................................................................xxxxxxxxxxxxxxxxxxxxxx..............................................................................xxxxxxxxxxxxxx",
-	"xxxxxxxxxx.................................................................xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.................................................................xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.................................................................xxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxxxxxxxxxxxx.................................................xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.................................................xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.................................................xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"XXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxx........xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxx........xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxx........xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXX",
-	"XXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxXXXXXXXXXXXXX",
-	"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    };
-
-	int start_row = 24;
-	for (int i = 0; i < 15; i++) {
-		for (int j = 0; j < 300; j++) {
-			background[start_row + i][j] = art[i][j];
-		}
-	}
+	static char background[HEIGHT][WIDTH];
+	static bool initialized = false;
 	static int index = 0;
-	int next_start_row = start_row + 1;
-	if (next_start_row + 15 > 40) {
-		next_start_row = 0;
+
+	//Randomly Generate Background
+	if (!initialized) {
+		double baseFreq   = (2.0 * M_PI) / 300;
+		double detailFreq = (2.0 * M_PI) / 150;
+		double fineFreq   = (2.0 * M_PI) / 100;
+		double firstFreq   = (2.0 * M_PI) / 50;
+
+		double baseAmp    = HEIGHT / (std::rand() % 10 + 1);
+		if (baseAmp < 5)
+			baseAmp = 5;
+		double detailAmp  = HEIGHT / (std::rand() % 15 + 1);
+		if (detailAmp < 10)
+			detailAmp = 10;
+		double fineAmp    = HEIGHT / (std::rand() % 30 + 1);
+		if (fineAmp > 20)
+			fineAmp = 20;
+		double firstAmp    = HEIGHT / (std::rand() % 45 + 1);
+		if (firstAmp > 30)
+			firstAmp = 30;
+
+
+		double offset = HEIGHT / 2.0;
+
+		for (int x = 0; x < WIDTH; ++x) {
+			
+			double base = static_cast<int>(ft_sin(x * baseFreq) * baseAmp + offset * 2.0) - 25;
+			double detail = static_cast<int>(ft_sin(x * detailFreq) * detailAmp + offset * 2.0) - 20;
+			double fine = static_cast<int>(ft_sin(x * fineFreq) * fineAmp + offset * 2.0) - 15;
+			double first = static_cast<int>(ft_sin(x * firstFreq) * firstAmp + offset * 2.0) - 7;
+
+			for (int y = 0; y < HEIGHT; ++y) {
+				if (y < base)
+					background[y][x] = ' ';
+				else
+					background[y][x] = '.';
+				if (y >= detail)
+					background[y][x] = '%';
+				if (y >= fine)
+					background[y][x] = 'X';
+				if (y >= first)
+					background[y][x] = '@';
+			}
+		}
+		initialized = true;
 	}
 
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);
-	wattron(this->_board, COLOR_PAIR(4));
-	for (int i = 0; i < HEIGHT; ++i) {
-		for (int j = 0; j < LENGTH; ++j) {
-			int wrapped_col = (j + index) % 300;
-			this->addAt(i, j, background[i][wrapped_col]);
+	//Scroll Background
+	if (index % 1 == 0) {
+		init_pair(4, COLOR_GREEN, COLOR_BLACK);
+		wattron(this->_board, COLOR_PAIR(4));
+		for (int i = 0; i < HEIGHT; ++i) {
+			for (int j = 0; j < LENGTH; ++j) {
+				int wrapped_col = (j + index) % WIDTH;
+				this->addAt(i, j, background[i][wrapped_col]);
+			}
 		}
+		wattroff(this->_board, COLOR_PAIR(4));
 	}
-	wattroff(this->_board, COLOR_PAIR(4));
 	index++;
-	
+
+	//Create Upper & Lower Border
 	this->addBorder();
-	
-	//Create Upper and Lower Layer
 	init_pair(3, COLOR_BLACK, COLOR_WHITE);
 	wattron(this->_board, COLOR_PAIR(3));
 	for (size_t i = 0; i < LENGTH; ++i) {
@@ -169,5 +184,4 @@ void	Game::createBackground( void ) {
 		this->addAt(HEIGHT - 1, i, ' ');
 	}
 	wattroff(this->_board, COLOR_PAIR(3));
-	
 }

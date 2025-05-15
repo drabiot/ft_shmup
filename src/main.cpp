@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 14:34:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:58:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	main(int argc, char **argv) {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 	
+	std::srand(std::time(0));
+
 	Game		game;
 	Scoreboard	scoreboard;
 	game.initializeBorder();

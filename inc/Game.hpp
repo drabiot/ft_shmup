@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 10:45:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:47:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ class Game {
 		void	addBorder( void );
 		void	clearBorder( void );
 };
+
+//const str   *selectBackground( int type );
 
 #endif //GAME_HPP
 
