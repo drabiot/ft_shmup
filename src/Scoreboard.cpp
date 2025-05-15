@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:59 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 14:41:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:45:35 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ Scoreboard &Scoreboard::operator = ( cref(Scoreboard) rhs ) {
 	return (*this);
 }
 
-Scoreboard::~Scoreboard( void ) {}
+Scoreboard::~Scoreboard( void ) {
+	delwin(this->_scoreboard);
+}
 
 void	Scoreboard::initialize( void ) {
 	this->clearScoreboard();

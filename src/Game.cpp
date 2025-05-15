@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 15:37:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:49:39 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ Game::Game( void ) {
 
 Game::~Game( void ) {
 	//End the Game Screen
+	delwin(this->_board);
 	endwin();
 }
 
@@ -59,6 +60,7 @@ chtype	Game::getInput( void ) {
 	curs_set(FALSE);
     keypad(stdscr, TRUE);
     nodelay(this->_board, TRUE);
+	cbreak();
 	
 	return (wgetch(this->_board));
 }
@@ -123,17 +125,17 @@ void	Game::createBackground( void ) {
 		double firstFreq   = (2.0 * M_PI) / 50;
 
 		double baseAmp    = HEIGHT / (std::rand() % 10 + 1);
-		if (baseAmp < 5)
-			baseAmp = 5;
+		if (baseAmp < HEIGHT / 5)
+			baseAmp = HEIGHT / 5;
 		double detailAmp  = HEIGHT / (std::rand() % 15 + 1);
-		if (detailAmp < 10)
-			detailAmp = 10;
+		if (detailAmp < HEIGHT / 10)
+			detailAmp = HEIGHT / 10;
 		double fineAmp    = HEIGHT / (std::rand() % 30 + 1);
-		if (fineAmp > 20)
-			fineAmp = 20;
+		if (fineAmp > HEIGHT / 20)
+			fineAmp = HEIGHT / 20;
 		double firstAmp    = HEIGHT / (std::rand() % 45 + 1);
-		if (firstAmp > 30)
-			firstAmp = 30;
+		if (firstAmp > HEIGHT / 30)
+			firstAmp = HEIGHT / 30;
 
 
 		double offset = HEIGHT / 2.0;

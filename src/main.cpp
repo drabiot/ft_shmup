@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 13:58:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:48:15 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int argc, char **argv) {
 	curs_set(FALSE);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
+	cbreak();
 	
 	std::srand(std::time(0));
 
