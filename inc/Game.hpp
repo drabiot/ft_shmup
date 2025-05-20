@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 19:08:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:16:57 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,16 @@ class Game {
 		void	refreshBorder( void );
 		void	addAt( int y, int x, chtype ch);
 
-		chtype	getInput( void );
 		bool	isGameOver( void );
 
+		chtype	getInput( void );
 		void	processInput( void );
 		void	updateGame( void );
-		void	createBackground( void );
+		void	endScreen( void );
+
+		void	displayBackground( void );
 		void	displayPlayer( void );
-		void	displayEnd( void );
+		void    displayEnd( void );
 	private:
 		WINDOW		*_board;
 		bool		_gameOver;

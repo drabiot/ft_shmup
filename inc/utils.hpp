@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/15 19:56:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:52:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ typedef std::string str;
 # define DETAIL         '%'
 # define FINE           '*'
 # define FIRST          '@'
+
+# define BASEF          (2.0 * M_PI) / 300
+# define DETAILF        (2.0 * M_PI) / 150
+# define FINEF          (2.0 * M_PI) / 100
+# define FIRSTF         (2.0 * M_PI) / 50
+
+# define BASEA          (HEIGHT / 5)
+# define DETAILA        (HEIGHT / 10)
+# define FINEA          (HEIGHT / 20)
+# define FIRSTA         (HEIGHT / 30)
 
 double  ft_sin( double x );
 
