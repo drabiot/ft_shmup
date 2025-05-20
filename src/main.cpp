@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 20:19:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/20 23:45:04 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv) {
     nodelay(stdscr, TRUE);
 	cbreak();
 	setlocale(LC_ALL, "");
-	
+
 	std::srand(std::time(0));
 
 	try {
@@ -36,8 +36,12 @@ int	main(int argc, char **argv) {
 		while (!game.isGameOver()) {
 			game.processInput();
 			game.updateGame();
+			scoreboard.updateScoreboard(game.getPlayer());
 			game.refreshBorder();
 			scoreboard.refreshScoreboard();
+
+			wnoutrefresh(game.getWindow());
+			wnoutrefresh(scoreboard.getWindow());
 			doupdate();
 
 			usleep(FRAME_DELAY);

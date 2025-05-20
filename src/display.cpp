@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 21:48:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:49:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	Game::displayBackground( void ) {
 
 void	Game::displayPlayer( void ) {
 	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛸");
+	this->_player.updateTime();
 }
 
 void    Game::displayEnd( void ) {
@@ -99,7 +100,7 @@ void    Game::displayEnd( void ) {
 
 	wattroff(this->_board, A_BOLD);
 
-    	const str	scoreDisplay = intToStr(this->_player.getScore());
+    const str	scoreDisplay = intToStr(this->_player.getScore());
 	int			padding = scoreDisplay.size();
 	if (padding % 2 != 0)
 		padding++;

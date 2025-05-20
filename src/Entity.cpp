@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:42:20 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/14 08:59:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:37:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ size_t	Entity::getLife( void ) {
 	return (this->_life);
 }
 
+size_t	Entity::getMaxLife( void ) {
+	return (this->_maxLife);
+}
+
 void	Entity::setPosX( size_t newX ) {
 	this->_posX = newX;
 }
@@ -44,3 +48,6 @@ void	Entity::setLife( size_t newLife ) {
 	this->_life = newLife;
 }
 
+void	Entity::setMaxLife( size_t newMaxLife ) {
+	this->_maxLife = newMaxLife;
+}

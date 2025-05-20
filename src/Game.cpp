@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 20:56:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/20 23:53:59 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ Game::Game( void ) {
 
 	//Init Game Screen
 	initscr();
+
+	start_color();
 
 	//Create & Init Playing Board
 	refresh();
@@ -37,6 +39,7 @@ Game::~Game( void ) {
 }
 
 void	Game::initializeBorder( void ) {
+	
 	this->clearBorder();
 	this->refreshBorder();
 }
@@ -60,6 +63,14 @@ void	Game::addAt( int y, int x, chtype ch) {
 
 bool	Game::isGameOver( void ) {
 	return (this->_gameOver);
+}
+
+Player	Game::getPlayer( void ) {
+	return (this->_player);
+}
+
+WINDOW	*Game::getWindow( void ) {
+	return (this->_board);
 }
 
 chtype	Game::getInput( void ) {
