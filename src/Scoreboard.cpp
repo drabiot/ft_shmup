@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:59 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 23:53:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:49:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,16 @@ void	Scoreboard::updateScoreboard( Player player ) {
 	this->clearScoreboard();
 	
 	//Create Health Bar
-	init_pair(1, COLOR_RED, COLOR_BLACK);
 	mvwprintw(this->_scoreboard, 1, 12, "Life:");
 	size_t	i = 0;
 	size_t	padding = 10;
 	for (; i < player.getLife(); ++i) {
-		wattron(this->_scoreboard, COLOR_PAIR(1));
 		mvwprintw(this->_scoreboard, 2, i + padding, "❤️");
 		padding += 2;
-		wattroff(this->_scoreboard, COLOR_PAIR(1));
 	}
 	for (; i < player.getMaxLife(); ++i) {
-		wattron(this->_scoreboard, COLOR_PAIR(1));
 		mvwprintw(this->_scoreboard, 2, i + padding, "🖤");
 		padding += 2;
-		wattroff(this->_scoreboard, COLOR_PAIR(1));
 	}
 
 	//Create Score

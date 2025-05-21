@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 22:49:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:49:57 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,7 @@ void	Game::displayBackground( void ) {
 	static char backgroundFirst[HEIGHT][WIDTH];
 
 	static bool initialized = false;
-
-	static int	indexAddBase = 0;
-	static int	indexAddDetail = 0;
-	static int	indexAddFine = 0;
-
-	static int	indexBase = 0;
-	static int	indexDetail = 0;
-	static int	indexFine = 0;
-    static int	index = 0;
+	static std::vector<int> index(4, 0);
 
 	//Randomly Generate Background
 	if (!initialized) {
@@ -46,25 +38,24 @@ void	Game::displayBackground( void ) {
 	}
 
 	//Scroll Background
-    displayBackgroundHills(backgroundBase, "base", indexBase, this->_board);
-    displayBackgroundHills(backgroundDetail, "detail", indexDetail, this->_board);
-    displayBackgroundHills(backgroundFine, "fine", indexFine, this->_board);
-    displayBackgroundHills(backgroundFirst, "first", index, this->_board);
+    displayBackgroundHills(backgroundBase, "base", index[3], this->_board);
+    displayBackgroundHills(backgroundDetail, "detail", index[2], this->_board);
+    displayBackgroundHills(backgroundFine, "fine", index[1], this->_board);
+    displayBackgroundHills(backgroundFirst, "first", index[0], this->_board);
 
-    index++;
-    if (++indexAddBase  % 15 == 0) ++indexBase;
-    if (++indexAddDetail %  7 == 0) ++indexDetail;
-    if (++indexAddFine   %  3 == 0) ++indexFine;
+    index[0]++;
+    if (index[0] % 15 == 0) ++index[3];
+    if (index[0] %  7 == 0) ++index[2];
+    if (index[0] %  3 == 0) ++index[1];
 
 	//Create Upper & Lower Border
 	this->addBorder();
-	init_pair(3, COLOR_BLACK, COLOR_WHITE);
-	wattron(this->_board, COLOR_PAIR(3));
+	wattron(this->_board, COLOR_PAIR(1));
 	for (size_t i = 0; i < LENGTH; ++i) {
 		this->addAt(0, i, ' ');
 		this->addAt(HEIGHT - 1, i, ' ');
 	}
-	wattroff(this->_board, COLOR_PAIR(3));
+	wattroff(this->_board, COLOR_PAIR(1));
 }
 
 void	Game::displayPlayer( void ) {
@@ -136,10 +127,8 @@ static void createBackgroundHills(char back[HEIGHT][WIDTH], double freq, double 
 }
 
 static void displayBackgroundHills(char back[HEIGHT][WIDTH], str type, int index, WINDOW *board) {
-	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(5, COLOR_GREEN, COLOR_BLACK);
 
-    int color = (type == "base" || type == "detail") ? 4 : 5;
+    int color = (type == "base" || type == "detail") ? 2 : 3;
 
     for (int i = 0; i < HEIGHT; ++i) {
 		for (int j = 0; j < LENGTH; ++j) {

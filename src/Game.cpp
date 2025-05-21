@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 23:53:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:51:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,13 @@ Game::Game( void ) {
 	//Init Game Screen
 	initscr();
 
+	//Init Colors
+	if (!has_colors())
+		throw std::runtime_error("Can't initialize Colors");
 	start_color();
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);		//Foreground
+	init_pair(2, COLOR_YELLOW, COLOR_BLACK);	//Far Background Night
+    init_pair(3, COLOR_GREEN, COLOR_BLACK);		//Midground Night
 
 	//Create & Init Playing Board
 	refresh();
@@ -112,7 +118,6 @@ void	Game::processInput( void ) {
 
 void	Game::updateGame( void ) {
 	this->clearBorder();
-	wattroff(this->_board, COLOR_PAIR(3));
 	
 	//Create & Display Background
 	this->displayBackground();
@@ -122,7 +127,6 @@ void	Game::updateGame( void ) {
 	//Display Enemies
 
 	//Display Player
-	init_pair(2, COLOR_BLACK, COLOR_CYAN);
 	wattron(this->_board, A_BOLD);
 	this->displayPlayer();
 	wattroff(this->_board, A_BOLD);
