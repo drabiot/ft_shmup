@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 19:49:57 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 21:22:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void createBackgroundHills(char back[HEIGHT][WIDTH], double freq, double 
 static void displayBackgroundHills(char back[HEIGHT][WIDTH], str type, int index, WINDOW *board);
 
 static str intToStr(int value);
-//static str doubleToStr(double value);
+static str	createTimerFormat(int value);
 
 
 void	Game::displayBackground( void ) {
@@ -59,7 +59,7 @@ void	Game::displayBackground( void ) {
 }
 
 void	Game::displayPlayer( void ) {
-	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛸");
+	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛩️");
 	this->_player.updateTime();
 }
 
@@ -91,18 +91,19 @@ void    Game::displayEnd( void ) {
 
 	wattroff(this->_board, A_BOLD);
 
+	//Create Score
     const str	scoreDisplay = intToStr(this->_player.getScore());
 	int			padding = scoreDisplay.size();
 	if (padding % 2 != 0)
 		padding++;
 	mvwprintw(this->_board, HEIGHT / 2 + 11, LENGTH / 2 - 20 + 3 - (padding / 2), "%s", scoreDisplay.c_str());
 
-    //double	endTime = static_cast<double>(this->_player.getTimeSurvived() - std::clock()) / CLOCKS_PER_SEC;
-	//const str	timeDisplay = doubleToStr(endTime);
-	//padding = timeDisplay.size();
-	//if (padding % 2 != 0)
-	//	padding++;
-	//mvwprintw(this->_board, HEIGHT / 2 + 11, LENGTH / 2 + 14 + 3 - (padding / 2), "%s", scoreDisplay.c_str());
+	//Create Timer
+	const str	timeDisplay = createTimerFormat(this->_player.getTimer());
+	padding = timeDisplay.size();
+	if (padding % 2 != 0)
+		padding++;
+	mvwprintw(this->_board, HEIGHT / 2 + 11, LENGTH / 2 + 14 + 3 - (padding / 2), "%s", timeDisplay.c_str());
 }
 
 static void createBackgroundHills(char back[HEIGHT][WIDTH], double freq, double amp, int height, str type) {
@@ -149,8 +150,18 @@ static str intToStr(int value) {
     return oss.str();
 }
 
-/*static str doubleToStr(double value) {
+static str	createTimerFormat(int value) {
+	int	sec = value % 60;
+	int	min = (value / 60) % 60;
+	int hour = value / 3600;
+
     std::ostringstream oss;
-    oss << value;
+
+    if (hour > 0)
+        oss << std::setw(2) << std::setfill('0') << hour << ":";
+    
+    oss << std::setw(2) << std::setfill('0') << min << ":"
+        << std::setw(2) << std::setfill('0') << sec;
+
     return oss.str();
-}*/
+}

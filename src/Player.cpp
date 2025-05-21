@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:43:02 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 23:37:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 21:35:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ Player::Player( void ) {
 	this->_maxLife = 3;
 	this->_score = 0;
 	this->_timeSurvived = 0;
+	this->_timer = 0;
+	this->_power = 0;
 }
 
 Player::~Player( void ) {}
@@ -31,10 +33,32 @@ unsigned long long	Player::getTimeSurvived( void ) {
 	return (this->_timeSurvived);
 }
 
-void	Player::updateScore( void ) {}
+size_t	Player::getTimer( void ) {
+	return (this->_timer);
+}
+
+size_t	Player::getPower( void ) {
+	return (this->_power);
+}
+
+void	Player::setScore( size_t value ) {
+	this->_score += value;
+}
 
 void	Player::updateTime( void ) {
 	this->_timeSurvived++;
-	//if (this->_timeSurvived > 1600000)
-	//	this->_timeSurvived = 0;
+	if (static_cast<int>(this->_timeSurvived * 0.016) >= 1) {
+		this->_timeSurvived = 0;
+		this->updateTimer();
+	}
+}
+
+void	Player::updateTimer( void ) {
+	this->_timer++;
+	this->updatePower();
+}
+
+void	Player::updatePower( void ) {
+	if (this->_power < 20)
+		this->_power++;
 }

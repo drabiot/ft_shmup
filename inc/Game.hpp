@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 23:41:40 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:27:39 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Game {
 		void	addAt( int y, int x, chtype ch);
 
 		bool	isGameOver( void );
-		Player	getPlayer( void );
+		Player	*getPlayer( void );
 		WINDOW	*getWindow( void );
 
 		chtype	getInput( void );

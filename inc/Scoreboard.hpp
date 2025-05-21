@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:05:21 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/20 23:41:28 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:37:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ class Scoreboard {
 		
 		void	initialize( void );
 		void	addBorder( void );
-		void	updateScoreboard( Player player );
+		void	updateScoreboard( Player *player );
 		void	clearScoreboard( void );
 		void	refreshScoreboard( void );
+		void	endScreen( void );
 	private:
 		WINDOW	*_scoreboard;
 };

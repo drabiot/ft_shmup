@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 19:45:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:37:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	main(int argc, char **argv) {
 	
 	//End Menu with total Score & Time Survivec
 	game.endScreen();
+	scoreboard.endScreen();
 	getch();
 
 	} catch (const std::exception& e) {

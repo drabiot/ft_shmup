@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 19:51:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:51:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ Game::Game( void ) {
 	init_pair(1, COLOR_BLACK, COLOR_WHITE);		//Foreground
 	init_pair(2, COLOR_YELLOW, COLOR_BLACK);	//Far Background Night
     init_pair(3, COLOR_GREEN, COLOR_BLACK);		//Midground Night
+	init_pair(4, COLOR_CYAN, COLOR_BLACK);		//Player 1
 
 	//Create & Init Playing Board
 	refresh();
@@ -71,8 +72,8 @@ bool	Game::isGameOver( void ) {
 	return (this->_gameOver);
 }
 
-Player	Game::getPlayer( void ) {
-	return (this->_player);
+Player	*Game::getPlayer( void ) {
+	return &(this->_player);
 }
 
 WINDOW	*Game::getWindow( void ) {
