@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Projectile.hpp                                     :+:      :+:    :+:   */
+/*   Projectile.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 23:00:12 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:56:51 by tchartie         ###   ########.fr       */
+/*   Created: 2025/05/27 17:14:46 by tchartie          #+#    #+#             */
+/*   Updated: 2025/05/27 17:21:54 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROJECTILE_HPP
-# define PROJECTILE_HPP
+#include "Projectile.hpp"
 
-# include "Entity.hpp"
+Projectile::Projectile( size_t x, size_t y, size_t dmUp ) {
+    this->_posX = x + 1;
+	this->_posY = y;
+	this->_life = 1;
+	this->_maxLife = 1;
+    this->_damage = 1 + dmUp;
+}
 
-class	Projectile : public Entity {
-	public:
-		Projectile( size_t x, size_t y, size_t dmUp );
-		~Projectile( void );
-    private:
-        size_t _damage;
-};
+Projectile::~Projectile( void ) {
 
-#endif //PROJECTILE_HPP
-
+}

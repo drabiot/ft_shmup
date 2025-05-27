@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 20:51:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:46:08 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ chtype	Game::getInput( void ) {
 
 void	Game::processInput( void ) {
 	chtype	input = this->getInput();
+
 	switch (input) {
 		case 'w':
 			if (this->_player.getPosY() - 1 > 0)
@@ -109,6 +110,9 @@ void	Game::processInput( void ) {
 			if (this->_player.getPosX() - 1 > 0)
 				this->_player.setPosX(this->_player.getPosX() - 1);
 			break;
+		case ' ':
+			this->_player.attack();
+			break;
 		case 'p':
 			this->_gameOver = true;
 			break;
@@ -121,6 +125,7 @@ void	Game::updateGame( void ) {
 	this->clearBorder();
 	
 	//Create & Display Background
+	this->updateRocket();
 	this->displayBackground();
 
 	//Create & Display Foreground
@@ -130,6 +135,11 @@ void	Game::updateGame( void ) {
 	//Display Player
 	wattron(this->_board, A_BOLD);
 	this->displayPlayer();
+	wattroff(this->_board, A_BOLD);
+
+	//Display Projctile
+	wattron(this->_board, A_BOLD);
+	this->displayRocket();
 	wattroff(this->_board, A_BOLD);
 
 	this->refreshBorder();
@@ -146,4 +156,19 @@ void	Game::endScreen( void ) {
 	this->displayEnd();
 	this->refreshBorder();
 	doupdate();
+}
+
+void	Game::addRocket( Projectile newRocket ) {
+	this->_rocket.push_back(newRocket);
+}
+
+void	Game::removeRocket( Projectile oldRocket ) {
+	(void)oldRocket;
+}
+
+void	Game::updateRocket( void ) {
+	this->_player.getPendingRocket(this->_rocket);
+	for (size_t i = 0; i < this->_rocket.size(); ++i) {
+    	this->_rocket[i].setPosX(this->_rocket[i].getPosX() + 1);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 20:27:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:38:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define GAME_HPP
 
 # include "Scoreboard.hpp"
+# include "Projectile.hpp"
 
 class Game {
 	public:
@@ -36,10 +37,16 @@ class Game {
 		void	displayBackground( void );
 		void	displayPlayer( void );
 		void    displayEnd( void );
+
+		void	addRocket( Projectile newRocket );
+		void	removeRocket( Projectile oldRocket );
+		void	updateRocket( void );
+		void	displayRocket( void );
 	private:
-		WINDOW		*_board;
-		bool		_gameOver;
-		Player		_player;
+		WINDOW					*_board;
+		bool					_gameOver;
+		Player					_player;
+		std::vector<Projectile>	_rocket;
 
 		void	addBorder( void );
 		void	clearBorder( void );

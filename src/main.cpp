@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 20:37:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:40:55 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ int	main(int argc, char **argv) {
 	(void)argc;
 	(void)argv;
 
+	//Init Utils
 	noecho();
 	curs_set(FALSE);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 	cbreak();
 	setlocale(LC_ALL, "");
+	mousemask(BUTTON1_CLICKED | BUTTON3_CLICKED, NULL);
 
 	std::srand(std::time(0));
 

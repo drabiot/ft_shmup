@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 21:22:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:03:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ void	Game::displayBackground( void ) {
 void	Game::displayPlayer( void ) {
 	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛩️");
 	this->_player.updateTime();
+}
+
+void	Game::displayRocket( void ) {
+	for (size_t i = 0; i < this->_rocket.size(); ++i) {
+    	mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "-");
+	}
 }
 
 void    Game::displayEnd( void ) {

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:15 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 21:33:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:58:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PLAYER_HPP
 
 # include "Entity.hpp"
+# include "Projectile.hpp"
 
 class	Player : public Entity{
 	public:
@@ -29,11 +30,16 @@ class	Player : public Entity{
 		void				updateTime( void );
 		void				updateTimer( void );
 		void				updatePower( void );
+		void				rebootPower( void );
+
+		void				getPendingRocket( std::vector<Projectile> &out );
+		void				attack( void );
 	private:
-		size_t				_score;
-		unsigned long long	_timeSurvived;
-		size_t				_timer;
-		size_t				_power;
+		size_t					_score;
+		unsigned long long		_timeSurvived;
+		size_t					_timer;
+		size_t					_power;
+		std::vector<Projectile> _pendingRocket;
 };
 
 #endif //PLAYER_HPP

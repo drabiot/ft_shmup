@@ -6,11 +6,12 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:43:02 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 21:35:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:01:54 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
+#include "Projectile.hpp"
 
 Player::Player( void ) {
 	this->_posX = 30;
@@ -61,4 +62,20 @@ void	Player::updateTimer( void ) {
 void	Player::updatePower( void ) {
 	if (this->_power < 20)
 		this->_power++;
+}
+
+void	Player::rebootPower( void ) {
+	this->_power = 0;
+}
+
+void	Player::getPendingRocket( std::vector<Projectile> &out ) {
+	out.insert(out.end(), this->_pendingRocket.begin(), this->_pendingRocket.end());
+    this->_pendingRocket.clear();
+}
+
+void	Player::attack( void ) {
+	Projectile rocket(getPosX(), getPosY(), getPower());
+
+	this->_pendingRocket.push_back(rocket);
+	this->rebootPower();
 }
