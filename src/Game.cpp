@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:46:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/21 07:44:35 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,13 @@ Game::Game( void ) {
 	if (!this->_board)
 		throw std::runtime_error("Can't initialize Game window");
 
+	this->_start = false;
 	this->_gameOver = false;
+
+	this->_up = 0;
+	this->_down = 0;
+	this->_left = 0;
+	this->_right = 0;
 }
 
 Game::~Game( void ) {
@@ -68,6 +74,10 @@ void	Game::addAt( int y, int x, chtype ch) {
 	mvwaddch(this->_board, y, x, ch);
 }
 
+bool	Game::isStarted( void ) {
+	return (this->_start);
+}
+
 bool	Game::isGameOver( void ) {
 	return (this->_gameOver);
 }
@@ -78,6 +88,73 @@ Player	*Game::getPlayer( void ) {
 
 WINDOW	*Game::getWindow( void ) {
 	return (this->_board);
+}
+
+void	Game::introGame( void ) {
+	this->clearBorder();
+
+	wattron(this->_board, COLOR_PAIR(4));
+	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 24 , "   _    _      _                               ");
+	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 24 , "  | |  | |    | |                              ");
+	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 24 , "  | |  | | ___| | ___ ___  _ __ ___   ___      ");
+	mvwprintw(this->_board, HEIGHT / 2 - 7, LENGTH / 2 - 24 , "  | |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\     ");
+	mvwprintw(this->_board, HEIGHT / 2 - 6, LENGTH / 2 - 24 , "  \\  /\\  /  __/ | (_| (_) | | | | | |  __/     ");
+	mvwprintw(this->_board, HEIGHT / 2 - 5, LENGTH / 2 - 24 , "   \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|     ");
+	mvwprintw(this->_board, HEIGHT / 2 - 4, LENGTH / 2 - 24 , "  __ _         _     _                        ");
+	mvwprintw(this->_board, HEIGHT / 2 - 3, LENGTH / 2 - 24 , " / _| |       | |   | |                        ");
+	mvwprintw(this->_board, HEIGHT / 2 - 2, LENGTH / 2 - 24 , "| |_| |_   ___| |__ | |_ _ __ ___  _   _ _ __  ");
+	mvwprintw(this->_board, HEIGHT / 2 - 1, LENGTH / 2 - 24 , "|  _| __| / __| '_ \\| __| '_ ` _ \\| | | | '_ \\ ");
+	mvwprintw(this->_board, HEIGHT / 2 + 0, LENGTH / 2 - 24 , "| | | |_  \\__ \\ | | | |_| | | | | | |_| | |_) |");
+	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 24 , "|_|  \\__| |___/_| |_|\\__|_| |_| |_|\\__,_| .__/ ");
+	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 24 , "      ______                            | |    ");
+	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 24 , "     |______|                           |_|    ");
+	wattroff(this->_board, COLOR_PAIR(4));
+
+	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 - 40, "Press 1: for Emojies");
+	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 + 20, "Press 2: for ASCII");
+
+	wattron(this->_board, A_BLINK);
+	mvwprintw(this->_board, HEIGHT / 2 + 12, LENGTH / 2 - 22, "*If this text don't blink select ASCII mode*");
+	wattroff(this->_board, A_BLINK);
+
+	chtype	input = this->getInput();
+	switch (input) {
+		case '1':
+			this->_emoji = true;
+			this->_start = true;
+			break;
+		case '2':
+			this->_emoji = false;
+			this->_start = true;
+			break;
+		default:
+			break;
+	}
+
+	this->refreshBorder();
+}
+
+void	Game::addDirection( int type ) {
+	chtype	input = wgetch(this->_board);
+	while (input != this->_up && input != this->_down && input != this->_left && input != this->_right) {
+		input = wgetch(this->_board);
+	}
+	switch (type) {
+		case 0:
+			this->_up = input;
+			break;
+		case 1:
+			this->_down = input;
+			break;
+		case 2:
+			this->_left = input;
+			break;
+		case 3:
+			this->_right = input;
+			break;
+		default:
+			break;
+	}
 }
 
 chtype	Game::getInput( void ) {
@@ -92,6 +169,8 @@ chtype	Game::getInput( void ) {
 
 void	Game::processInput( void ) {
 	chtype	input = this->getInput();
+	static unsigned int	attackSpeed = 0;
+	attackSpeed++;
 
 	switch (input) {
 		case 'w':
@@ -111,7 +190,10 @@ void	Game::processInput( void ) {
 				this->_player.setPosX(this->_player.getPosX() - 1);
 			break;
 		case ' ':
-			this->_player.attack();
+			if (attackSpeed > 5) {
+				this->_player.attack();
+				attackSpeed = 0;
+			}
 			break;
 		case 'p':
 			this->_gameOver = true;

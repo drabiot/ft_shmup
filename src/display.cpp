@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:03:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/21 07:06:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ void	Game::displayBackground( void ) {
 }
 
 void	Game::displayPlayer( void ) {
-	mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛩️");
+	if (this->_emoji)
+		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛩️");
+	else
+		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), ">");
 	this->_player.updateTime();
 }
 

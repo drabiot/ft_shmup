@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:40:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/21 07:23:55 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ int	main(int argc, char **argv) {
 		game.initializeBorder();
 		scoreboard.initialize();
 
+		while (!game.isStarted()) {
+			game.introGame();
+		}
+		game.refreshBorder();
+		wnoutrefresh(game.getWindow());
+		wnoutrefresh(scoreboard.getWindow());
+		doupdate();
+		//for (size_t i = 0; i < 4; ++i) {
+		//	game.addDirection(i);
+		//}
 		while (!game.isGameOver()) {
 			game.processInput();
 			game.updateGame();

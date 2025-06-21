@@ -57,7 +57,7 @@ OBJ				=	$(patsubst %, $(OBJ_DIR)%, $(OBJ_NAME))
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJ)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 	@echo "$(GREEN)ft_shmup successfully compiled! $(BASE_COLOR)"
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp
