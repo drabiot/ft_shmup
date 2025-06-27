@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/21 07:06:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:49:15 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,29 @@ void	Game::displayBackground( void ) {
 }
 
 void	Game::displayPlayer( void ) {
+	wattron(this->_board, COLOR_PAIR(4));
 	if (this->_emoji)
 		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛩️");
 	else
 		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), ">");
+	wattroff(this->_board, COLOR_PAIR(4));
 	this->_player.updateTime();
+}
+
+void	Game::displayObstacle( void ) {
+	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
+		wattron(this->_board, COLOR_PAIR(1));
+		mvwprintw(this->_board, this->_obstacle[i].getPosY(), this->_obstacle[i].getPosX(), " ");
+		wattroff(this->_board, COLOR_PAIR(1));
+	}
 }
 
 void	Game::displayRocket( void ) {
 	for (size_t i = 0; i < this->_rocket.size(); ++i) {
-    	mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "-");
+		if (this->_rocket[i].getDamage() == 5)
+			mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "=");
+		else
+    		mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "-");
 	}
 }
 

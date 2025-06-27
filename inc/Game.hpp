@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/21 07:09:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/27 19:01:49 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "Scoreboard.hpp"
 # include "Projectile.hpp"
+# include "Wall.hpp"
 
 class Game {
 	public:
@@ -30,6 +31,7 @@ class Game {
 
 		Player	*getPlayer( void );
 		WINDOW	*getWindow( void );
+		bool	getEmoji( void );
 
 		void	addDirection( int type );
 
@@ -41,19 +43,24 @@ class Game {
 
 		void	displayBackground( void );
 		void	displayPlayer( void );
+		void	displayObstacle( void );
 		void    displayEnd( void );
+
+		void	checkColision( void );
 
 		void	addRocket( Projectile newRocket );
 		void	removeRocket( Projectile oldRocket );
 		void	updateRocket( void );
 		void	displayRocket( void );
 	private:
+		bool					_emoji;
 		WINDOW					*_board;
 		bool					_start;
 		bool					_gameOver;
 		Player					_player;
+
 		std::vector<Projectile>	_rocket;
-		bool					_emoji;
+		std::vector<Wall>		_obstacle;
 
 		chtype					_up;
 		chtype					_down;

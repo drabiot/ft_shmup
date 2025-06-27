@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Projectile.hpp                                     :+:      :+:    :+:   */
+/*   Wall.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 23:00:12 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/25 23:47:58 by tchartie         ###   ########.fr       */
+/*   Created: 2025/06/27 18:38:44 by tchartie          #+#    #+#             */
+/*   Updated: 2025/06/27 18:50:57 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROJECTILE_HPP
-# define PROJECTILE_HPP
+#include "Wall.hpp"
 
-# include "Entity.hpp"
+Wall::Wall( size_t x, size_t y ) {
+    this->_posX = x;
+	this->_posY = y;
+	this->_life = -1;
+	this->_maxLife = -1;
+}
 
-class	Projectile : public Entity {
-	public:
-		Projectile( size_t x, size_t y, size_t dmUp );
-		~Projectile( void );
+Wall::~Wall( void ) {}
 
-		size_t	getDamage( void );
-    private:
-        size_t _damage;
-};
-
-#endif //PROJECTILE_HPP
-
+void    Wall::moveWall( void ) {
+    if (this->_posX - 1 >= 0)
+        this->_posX -= 1;
+}

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:59 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 21:47:06 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/25 23:44:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ Scoreboard::Scoreboard( void ) {
 
 	getmaxyx(stdscr, yMax, xMax);
 	this->_scoreboard = newwin(4, LENGTH, (yMax / 2) - (HEIGHT / 2) + HEIGHT, (xMax / 2) - (LENGTH / 2));
+	this->_emoji = false;
+	if (!this->_scoreboard)
+		throw std::runtime_error("Can't initialize Scoreboard window");
+}
+
+Scoreboard::Scoreboard( bool emoji ) {
+	size_t	xMax;
+	size_t	yMax;
+
+	getmaxyx(stdscr, yMax, xMax);
+	this->_scoreboard = newwin(4, LENGTH, (yMax / 2) - (HEIGHT / 2) + HEIGHT, (xMax / 2) - (LENGTH / 2));
+	this->_emoji = emoji;
 	if (!this->_scoreboard)
 		throw std::runtime_error("Can't initialize Scoreboard window");
 }
@@ -67,18 +79,30 @@ void	Scoreboard::updateScoreboard( Player *player ) {
 	size_t	i = 0;
 	size_t	padding = 12;
 	for (; i < player->getMaxLife(); ++i) {
-		if (i < player->getLife())
-			mvwprintw(this->_scoreboard, 1, i + padding, "❤️");
-		else
-			mvwprintw(this->_scoreboard, 1, i + padding, "🖤");
+		if (this->_emoji) {
+			if (i < player->getLife())
+				mvwprintw(this->_scoreboard, 1, i + padding, "❤️");
+			else
+				mvwprintw(this->_scoreboard, 1, i + padding, "🖤");
+		}
+		else {
+			if (i < player->getLife()) {
+				wattron(this->_scoreboard, COLOR_PAIR(6));
+				mvwprintw(this->_scoreboard, 1, i + padding, "<3");
+				wattroff(this->_scoreboard, COLOR_PAIR(6));
+			}
+			else
+				mvwprintw(this->_scoreboard, 1, i + padding, "<3");
+		}
 		padding += 2;
 	}
 
 	//Create Laser
 	mvwprintw(this->_scoreboard, 1, 26, "Laser:");
 	wattron(this->_scoreboard, A_REVERSE);
-	for (size_t i = 0; i < 20; ++i) {
-		if (i < player->getPower()) {
+
+	for (float i = 0; i < 20; ++i) {
+		if (i < static_cast<float>(player->getPower()) * 4) {
 			wattron(this->_scoreboard, COLOR_PAIR(4));
 			mvwprintw(this->_scoreboard, 1, 33 + i, " ");
 			wattroff(this->_scoreboard, COLOR_PAIR(4));

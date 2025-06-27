@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/21 07:44:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/27 19:30:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Game::Game( void ) {
 	init_pair(2, COLOR_YELLOW, COLOR_BLACK);	//Far Background Night
     init_pair(3, COLOR_GREEN, COLOR_BLACK);		//Midground Night
 	init_pair(4, COLOR_CYAN, COLOR_BLACK);		//Player 1
+	init_pair(6, COLOR_RED, COLOR_BLACK);		//Health
 
 	//Create & Init Playing Board
 	refresh();
@@ -42,6 +43,16 @@ Game::Game( void ) {
 	this->_down = 0;
 	this->_left = 0;
 	this->_right = 0;
+
+	for (size_t i = 0; i < HEIGHT; ++i) {
+		if (1 + std::rand() % HEIGHT - 2 != (int)i)
+			this->_obstacle.push_back(Wall(100, (int)i));
+		if (1 + std::rand() % HEIGHT - 2 != (int)i)
+			this->_obstacle.push_back(Wall(200, (int)i));
+		if ( 1 + std::rand() % HEIGHT - 2 != (int)i)
+			this->_obstacle.push_back(Wall(300, (int)i));
+	}
+
 }
 
 Game::~Game( void ) {
@@ -88,6 +99,10 @@ Player	*Game::getPlayer( void ) {
 
 WINDOW	*Game::getWindow( void ) {
 	return (this->_board);
+}
+
+bool	Game::getEmoji( void ) {
+	return (this->_emoji);
 }
 
 void	Game::introGame( void ) {
@@ -207,19 +222,24 @@ void	Game::updateGame( void ) {
 	this->clearBorder();
 	
 	//Create & Display Background
-	this->updateRocket();
 	this->displayBackground();
 
-	//Create & Display Foreground
+	//Display Foreground
+	this->displayObstacle();
+	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
+		this->_obstacle[i].moveWall();
+	}
 
 	//Display Enemies
 
-	//Display Player
+	//Display Player & Check colisions
 	wattron(this->_board, A_BOLD);
 	this->displayPlayer();
 	wattroff(this->_board, A_BOLD);
+	this->checkColision();
 
-	//Display Projctile
+	//Display & Update Projectile
+	this->updateRocket();
 	wattron(this->_board, A_BOLD);
 	this->displayRocket();
 	wattroff(this->_board, A_BOLD);
@@ -252,5 +272,23 @@ void	Game::updateRocket( void ) {
 	this->_player.getPendingRocket(this->_rocket);
 	for (size_t i = 0; i < this->_rocket.size(); ++i) {
     	this->_rocket[i].setPosX(this->_rocket[i].getPosX() + 1);
+	}
+}
+
+void	Game::checkColision( void ) {
+	if (this->_player.getLife() == 0) {
+		this->_gameOver = true;
+		return ;
+	}
+
+	size_t x = this->_player.getPosX();
+	size_t y = this->_player.getPosY();
+
+	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
+		if (x == this->_obstacle[i].getPosX() && y == this->_obstacle[i].getPosY()) {
+			this->_player.setLife(this->_player.getLife() - 1);
+			//go behind the end of the wall
+			return ;
+		}
 	}
 }

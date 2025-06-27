@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:05:21 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/21 20:37:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/25 22:55:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 class Scoreboard {
 	public:
 		Scoreboard( void );
+		Scoreboard( bool emoji );
 		Scoreboard( cref(Scoreboard) src );
 		Scoreboard &operator = ( cref(Scoreboard) rhs );
 		~Scoreboard( void );
@@ -32,6 +33,7 @@ class Scoreboard {
 		void	endScreen( void );
 	private:
 		WINDOW	*_scoreboard;
+		bool	_emoji;
 };
 
 #endif //SCOREBOARD_HPP

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/21 07:23:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/25 23:03:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ int	main(int argc, char **argv) {
 
 	try {
 		Game		game;
-		Scoreboard	scoreboard;
 
 		game.initializeBorder();
-		scoreboard.initialize();
 
 		while (!game.isStarted()) {
 			game.introGame();
 		}
+		Scoreboard	scoreboard(game.getEmoji());
+		scoreboard.initialize();
+		
 		game.refreshBorder();
 		wnoutrefresh(game.getWindow());
 		wnoutrefresh(scoreboard.getWindow());

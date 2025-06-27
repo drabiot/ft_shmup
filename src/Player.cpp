@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:43:02 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:01:54 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/25 23:24:54 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	Player::updateTimer( void ) {
 }
 
 void	Player::updatePower( void ) {
-	if (this->_power < 20)
+	if (this->_power < 5)
 		this->_power++;
 }
 

@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 07:22:39 by tchartie          #+#    #+#              #
-#    Updated: 2025/05/27 17:19:12 by tchartie         ###   ########.fr        #
+#    Updated: 2025/06/27 18:50:37 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ SRC_NAME 		=	main.cpp \
 					Scoreboard.cpp \
 					Entity.cpp \
 					Player.cpp \
-					Projectile.cpp
+					Projectile.cpp \
+					Wall.cpp
 
 OBJ_DIR 		=	obj/
 OBJ_NAME		=	$(SRC_NAME:.cpp=.o)
