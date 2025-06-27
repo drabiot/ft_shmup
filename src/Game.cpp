@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/27 19:30:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/27 19:32:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,11 +232,11 @@ void	Game::updateGame( void ) {
 
 	//Display Enemies
 
-	//Display Player & Check colisions
+	//Display Player & Check collisions
 	wattron(this->_board, A_BOLD);
 	this->displayPlayer();
 	wattroff(this->_board, A_BOLD);
-	this->checkColision();
+	this->checkCollision();
 
 	//Display & Update Projectile
 	this->updateRocket();
@@ -275,7 +275,7 @@ void	Game::updateRocket( void ) {
 	}
 }
 
-void	Game::checkColision( void ) {
+void	Game::checkCollision( void ) {
 	if (this->_player.getLife() == 0) {
 		this->_gameOver = true;
 		return ;

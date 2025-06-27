@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/27 19:01:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/06/27 19:32:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ class Game {
 		void	displayObstacle( void );
 		void    displayEnd( void );
 
-		void	checkColision( void );
+		void	checkCollision( void );
 
 		void	addRocket( Projectile newRocket );
 		void	removeRocket( Projectile oldRocket );
