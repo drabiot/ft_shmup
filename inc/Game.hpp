@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/27 19:32:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:30:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ class Game {
 		bool	getEmoji( void );
 
 		void	addDirection( int type );
+		bool	createWall( str mapName );
 
 		chtype	getInput( void );
 		void	processInput( void );
@@ -53,19 +54,23 @@ class Game {
 		void	updateRocket( void );
 		void	displayRocket( void );
 	private:
-		bool					_emoji;
-		WINDOW					*_board;
-		bool					_start;
-		bool					_gameOver;
-		Player					_player;
+		bool						_emoji;
+		WINDOW						*_board;
+		bool						_start;
+		bool						_gameOver;
+		Player						_player;
 
-		std::vector<Projectile>	_rocket;
-		std::vector<Wall>		_obstacle;
+		std::vector<Projectile>		_rocket;
+		std::vector<Wall>			_obstacle;
 
-		chtype					_up;
-		chtype					_down;
-		chtype					_left;
-		chtype					_right;
+		chtype						_up;
+		chtype						_down;
+		chtype						_left;
+		chtype						_right;
+
+		std::vector<std::string>	_finalMap;
+		char 						_fillChar;
+		char						_emptyChar;
 
 		void	addBorder( void );
 		void	clearBorder( void );

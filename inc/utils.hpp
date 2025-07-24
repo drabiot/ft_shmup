@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/27 19:26:10 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:37:43 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sstream>
 # include <vector>
 # include <iomanip>
+# include <fstream>
 
 # include "color.hpp"
 

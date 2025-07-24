@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/27 19:32:33 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:47:46 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,8 @@ Game::Game( void ) {
 	this->_left = 0;
 	this->_right = 0;
 
-	for (size_t i = 0; i < HEIGHT; ++i) {
-		if (1 + std::rand() % HEIGHT - 2 != (int)i)
-			this->_obstacle.push_back(Wall(100, (int)i));
-		if (1 + std::rand() % HEIGHT - 2 != (int)i)
-			this->_obstacle.push_back(Wall(200, (int)i));
-		if ( 1 + std::rand() % HEIGHT - 2 != (int)i)
-			this->_obstacle.push_back(Wall(300, (int)i));
-	}
+	if (!createWall("map/test.mp"))
+		throw std::runtime_error("Can't initialize Map");
 
 }
 
@@ -172,6 +166,103 @@ void	Game::addDirection( int type ) {
 	}
 }
 
+bool	Game::createWall(str mapName) {
+	(void)mapName;
+	std::ifstream map("maps/test.mp");
+
+	//Open Map
+	if (!map.is_open()) return (false);
+	map.seekg(0, std::ios::end);
+	if (map.tellg() == 0) {
+		map.close();
+		return (false);
+	}
+	map.seekg(0, std::ios::beg);
+
+	//Analyze Header
+	str line;
+	int origWidth = -1;
+	int origHeight = -1;
+
+	std::getline(map, line);
+	if (line.substr(0, 6) == "size\t:") {
+		origWidth = atoi(line.substr(6, line.size() - 7).c_str());
+		if (line[line.size() - 1] != ';')
+			return (false);
+	} else
+		return (false);
+
+	std::getline(map, line);
+	if (line.substr(0, 8) == "height\t:") {
+		origHeight = atoi(line.substr(8, line.size() - 9).c_str());
+		if (line[line.size() - 1] != ';')
+			return (false);
+	} else
+		return (false);
+
+	std::getline(map, line);
+	if (line.substr(0, 9) == "element\t:") {
+		this->_fillChar = line.substr(9, 1)[0];
+		if (line[10] != ';')
+			return (false);
+	} else
+		return (false);
+
+	std::getline(map, line);
+	if (line.substr(0, 7) == "empty\t:") {
+		this->_emptyChar = line.substr(7, 1)[0];
+		if (line[8] != ';')
+			return (false);
+	} else
+		return (false);
+
+	//Save Map
+	std::vector<std::string> originalMap;
+	for (int i = 0; i < origHeight; ++i) {
+		if (!std::getline(map, line))
+			return (false);
+		if ((int)line.size() < origWidth)
+			line += std::string(origWidth - line.size(), this->_emptyChar);
+		originalMap.push_back(line);
+	}
+
+	//Scale Map
+	float scaleX = static_cast<float>(origWidth) / WIDTH;
+	float scaleY = static_cast<float>(origHeight) / HEIGHT;
+
+	this->_finalMap.clear();
+	this->_finalMap.resize(HEIGHT, std::string(WIDTH, this->_emptyChar));
+
+	for (int y = 0; y < HEIGHT; ++y) {
+		for (int x = 0; x < WIDTH; ++x) {
+			int origX = static_cast<int>(x * scaleX);
+			int origY = static_cast<int>(y * scaleY);
+
+			if (origX >= origWidth) origX = origWidth - 1;
+			if (origY >= origHeight) origY = origHeight - 1;
+
+			char c = originalMap[origY][origX];
+			if (c == this->_fillChar || c == this->_emptyChar)
+				this->_finalMap[y][x] = c;
+			else
+				this->_finalMap[y][x] = this->_emptyChar;
+		}
+	}
+
+	//Init - Fill Map with obstacle
+	for (int y = 0; y < HEIGHT; ++y) {
+		for (int x = 0; x < WIDTH; ++x) {
+			if (this->_finalMap[y][x] == this->_fillChar) {
+				this->_obstacle.push_back(Wall(x, y));
+				this->_obstacle.push_back(Wall(x + WIDTH, y));
+			}
+		}
+	}
+
+	return (true);
+}
+
+
 chtype	Game::getInput( void ) {
 	noecho();
 	curs_set(FALSE);
@@ -223,6 +314,21 @@ void	Game::updateGame( void ) {
 	
 	//Create & Display Background
 	this->displayBackground();
+
+	//Add Foreground
+	static int	frame = 0;
+	
+	if (frame == 299) {
+		for (int y = 0; y < HEIGHT; ++y) {
+			for (int x = 0; x < WIDTH; ++x) {
+				if (this->_finalMap[y][x] == this->_fillChar) {
+					this->_obstacle.push_back(Wall(x + WIDTH, y));
+				}
+			}
+		}
+		frame = 0;
+	}
+	frame++;
 
 	//Display Foreground
 	this->displayObstacle();
