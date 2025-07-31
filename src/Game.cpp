@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/07/24 15:47:46 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:30:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ Game::Game( void ) {
 	if (!has_colors())
 		throw std::runtime_error("Can't initialize Colors");
 	start_color();
-	init_pair(1, COLOR_BLACK, COLOR_WHITE);		//Foreground
-	init_pair(2, COLOR_YELLOW, COLOR_BLACK);	//Far Background Night
-    init_pair(3, COLOR_GREEN, COLOR_BLACK);		//Midground Night
-	init_pair(4, COLOR_CYAN, COLOR_BLACK);		//Player 1
-	init_pair(6, COLOR_RED, COLOR_BLACK);		//Health
+	init_pair(FOREGROUND, COLOR_BLACK, COLOR_WHITE);
+	init_pair(BACK_NIGHT, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(MID_NIGHT, COLOR_GREEN, COLOR_BLACK);
+	init_pair(PLAYER_1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(HEALTH, COLOR_RED, COLOR_BLACK);
 
 	//Create & Init Playing Board
 	refresh();
@@ -102,7 +102,7 @@ bool	Game::getEmoji( void ) {
 void	Game::introGame( void ) {
 	this->clearBorder();
 
-	wattron(this->_board, COLOR_PAIR(4));
+	wattron(this->_board, COLOR_PAIR(PLAYER_1));
 	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 24 , "   _    _      _                               ");
 	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 24 , "  | |  | |    | |                              ");
 	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 24 , "  | |  | | ___| | ___ ___  _ __ ___   ___      ");
@@ -117,7 +117,7 @@ void	Game::introGame( void ) {
 	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 24 , "|_|  \\__| |___/_| |_|\\__|_| |_| |_|\\__,_| .__/ ");
 	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 24 , "      ______                            | |    ");
 	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 24 , "     |______|                           |_|    ");
-	wattroff(this->_board, COLOR_PAIR(4));
+	wattroff(this->_board, COLOR_PAIR(PLAYER_1));
 
 	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 - 40, "Press 1: for Emojies");
 	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 + 20, "Press 2: for ASCII");

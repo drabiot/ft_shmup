@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 01:08:59 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/25 23:44:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:29:56 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ void	Scoreboard::updateScoreboard( Player *player ) {
 	this->clearScoreboard();
 	
 	//Create Layout P1
-	wattron(this->_scoreboard, COLOR_PAIR(4));
+	wattron(this->_scoreboard, COLOR_PAIR(PLAYER_1));
 	mvwprintw(this->_scoreboard, 1, 1, "P1");
-	wattroff(this->_scoreboard, COLOR_PAIR(4));
+	wattroff(this->_scoreboard, COLOR_PAIR(PLAYER_1));
 
 	//Create Health Bar
 	mvwprintw(this->_scoreboard, 1, 6, "Life:");
@@ -87,9 +87,9 @@ void	Scoreboard::updateScoreboard( Player *player ) {
 		}
 		else {
 			if (i < player->getLife()) {
-				wattron(this->_scoreboard, COLOR_PAIR(6));
+				wattron(this->_scoreboard, COLOR_PAIR(HEALTH));
 				mvwprintw(this->_scoreboard, 1, i + padding, "<3");
-				wattroff(this->_scoreboard, COLOR_PAIR(6));
+				wattroff(this->_scoreboard, COLOR_PAIR(HEALTH));
 			}
 			else
 				mvwprintw(this->_scoreboard, 1, i + padding, "<3");
@@ -103,9 +103,9 @@ void	Scoreboard::updateScoreboard( Player *player ) {
 
 	for (float i = 0; i < 20; ++i) {
 		if (i < static_cast<float>(player->getPower()) * 4) {
-			wattron(this->_scoreboard, COLOR_PAIR(4));
+			wattron(this->_scoreboard, COLOR_PAIR(PLAYER_1));
 			mvwprintw(this->_scoreboard, 1, 33 + i, " ");
-			wattroff(this->_scoreboard, COLOR_PAIR(4));
+			wattroff(this->_scoreboard, COLOR_PAIR(PLAYER_1));
 		}
 		else {
 			mvwprintw(this->_scoreboard, 1, 33 + i, " ");
@@ -114,17 +114,17 @@ void	Scoreboard::updateScoreboard( Player *player ) {
 	wattroff(this->_scoreboard, A_REVERSE);
 	//Create Score
 	mvwprintw(this->_scoreboard, 2, 26, "Score:");
-	wattron(this->_scoreboard, COLOR_PAIR(4));
+	wattron(this->_scoreboard, COLOR_PAIR(PLAYER_1));
     const str	scoreDisplay = intToStr(player->getScore());
 	mvwprintw(this->_scoreboard, 2, 33, "%s", scoreDisplay.c_str());
-	wattroff(this->_scoreboard, COLOR_PAIR(4));
+	wattroff(this->_scoreboard, COLOR_PAIR(PLAYER_1));
 
 	//Create Timer
 	mvwprintw(this->_scoreboard, 2, 6, "Time:");
-	wattron(this->_scoreboard, COLOR_PAIR(4));
+	wattron(this->_scoreboard, COLOR_PAIR(PLAYER_1));
     const str	timeDisplay = createTimerFormat(player->getTimer());
 	mvwprintw(this->_scoreboard, 2, 12, "%s", timeDisplay.c_str());
-	wattroff(this->_scoreboard, COLOR_PAIR(4));
+	wattroff(this->_scoreboard, COLOR_PAIR(PLAYER_1));
 	
 	this->refreshScoreboard();
 }

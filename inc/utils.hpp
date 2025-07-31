@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/07/24 14:37:43 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:30:35 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,15 @@ typedef std::string str;
 # define DETAIL         '%'
 # define FINE           '*'
 # define FIRST          '@'
+
+# define FOREGROUND		1
+# define BACK_NIGHT		2
+# define MID_NIGHT		3
+# define BACK_DAY		4
+# define MID_DAY		5
+# define PLAYER_1		6
+# define PLAYER_2		7
+# define HEALTH			8
 
 # define BASEF          (2.0 * M_PI) / 300
 # define DETAILF        (2.0 * M_PI) / 150
