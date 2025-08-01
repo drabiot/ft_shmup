@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:00:15 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:58:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:09:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ class	Player : public Entity{
 		unsigned long long	getTimeSurvived( void );
 		size_t				getTimer( void );
 		size_t				getPower( void );
+		size_t				getInvincibility( void );
 
 		void				setScore( size_t value );
+		void				setInvincibility( size_t value );
 		void				updateTime( void );
 		void				updateTimer( void );
 		void				updatePower( void );
 		void				rebootPower( void );
+		void				updateInvincibility( void );
 
 		void				getPendingRocket( std::vector<Projectile> &out );
 		void				attack( void );
@@ -39,6 +42,7 @@ class	Player : public Entity{
 		unsigned long long		_timeSurvived;
 		size_t					_timer;
 		size_t					_power;
+		size_t					_invincibility;
 		std::vector<Projectile> _pendingRocket;
 };
 

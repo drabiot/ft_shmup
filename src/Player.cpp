@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:43:02 by tchartie          #+#    #+#             */
-/*   Updated: 2025/06/25 23:24:54 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:15:46 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 #include "Projectile.hpp"
 
 Player::Player( void ) {
-	this->_posX = 30;
-	this->_posY = 20;
+	this->_posX = BASE_X_1;
+	this->_posY = BASE_Y_1;
 	this->_life = 3;
 	this->_maxLife = 3;
 	this->_score = 0;
 	this->_timeSurvived = 0;
 	this->_timer = 0;
 	this->_power = 0;
+	this->_invincibility = 2;
 }
 
 Player::~Player( void ) {}
@@ -42,8 +43,16 @@ size_t	Player::getPower( void ) {
 	return (this->_power);
 }
 
+size_t	Player::getInvincibility( void ) {
+	return (this->_invincibility);
+}
+
 void	Player::setScore( size_t value ) {
 	this->_score += value;
+}
+
+void	Player::setInvincibility( size_t value ) {
+	this->_invincibility = value;
 }
 
 void	Player::updateTime( void ) {
@@ -66,6 +75,11 @@ void	Player::updatePower( void ) {
 
 void	Player::rebootPower( void ) {
 	this->_power = 0;
+}
+
+void	Player::updateInvincibility( void ) {
+	if (this->_invincibility > 0)
+		this->_invincibility--;
 }
 
 void	Player::getPendingRocket( std::vector<Projectile> &out ) {

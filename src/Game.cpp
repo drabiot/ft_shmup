@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/07/31 18:30:09 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:43:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,52 +99,9 @@ bool	Game::getEmoji( void ) {
 	return (this->_emoji);
 }
 
-void	Game::introGame( void ) {
-	this->clearBorder();
-
-	wattron(this->_board, COLOR_PAIR(PLAYER_1));
-	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 24 , "   _    _      _                               ");
-	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 24 , "  | |  | |    | |                              ");
-	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 24 , "  | |  | | ___| | ___ ___  _ __ ___   ___      ");
-	mvwprintw(this->_board, HEIGHT / 2 - 7, LENGTH / 2 - 24 , "  | |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\     ");
-	mvwprintw(this->_board, HEIGHT / 2 - 6, LENGTH / 2 - 24 , "  \\  /\\  /  __/ | (_| (_) | | | | | |  __/     ");
-	mvwprintw(this->_board, HEIGHT / 2 - 5, LENGTH / 2 - 24 , "   \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|     ");
-	mvwprintw(this->_board, HEIGHT / 2 - 4, LENGTH / 2 - 24 , "  __ _         _     _                        ");
-	mvwprintw(this->_board, HEIGHT / 2 - 3, LENGTH / 2 - 24 , " / _| |       | |   | |                        ");
-	mvwprintw(this->_board, HEIGHT / 2 - 2, LENGTH / 2 - 24 , "| |_| |_   ___| |__ | |_ _ __ ___  _   _ _ __  ");
-	mvwprintw(this->_board, HEIGHT / 2 - 1, LENGTH / 2 - 24 , "|  _| __| / __| '_ \\| __| '_ ` _ \\| | | | '_ \\ ");
-	mvwprintw(this->_board, HEIGHT / 2 + 0, LENGTH / 2 - 24 , "| | | |_  \\__ \\ | | | |_| | | | | | |_| | |_) |");
-	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 24 , "|_|  \\__| |___/_| |_|\\__|_| |_| |_|\\__,_| .__/ ");
-	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 24 , "      ______                            | |    ");
-	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 24 , "     |______|                           |_|    ");
-	wattroff(this->_board, COLOR_PAIR(PLAYER_1));
-
-	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 - 40, "Press 1: for Emojies");
-	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 + 20, "Press 2: for ASCII");
-
-	wattron(this->_board, A_BLINK);
-	mvwprintw(this->_board, HEIGHT / 2 + 12, LENGTH / 2 - 22, "*If this text don't blink select ASCII mode*");
-	wattroff(this->_board, A_BLINK);
-
-	chtype	input = this->getInput();
-	switch (input) {
-		case '1':
-			this->_emoji = true;
-			this->_start = true;
-			break;
-		case '2':
-			this->_emoji = false;
-			this->_start = true;
-			break;
-		default:
-			break;
-	}
-
-	this->refreshBorder();
-}
-
 void	Game::addDirection( int type ) {
-	chtype	input = wgetch(this->_board);
+	(void)type;
+	/*chtype	input = wgetch(this->_board);
 	while (input != this->_up && input != this->_down && input != this->_left && input != this->_right) {
 		input = wgetch(this->_board);
 	}
@@ -163,7 +120,7 @@ void	Game::addDirection( int type ) {
 			break;
 		default:
 			break;
-	}
+	}*/
 }
 
 bool	Game::createWall(str mapName) {
@@ -280,20 +237,21 @@ void	Game::processInput( void ) {
 
 	switch (input) {
 		case 'w':
-			if (this->_player.getPosY() - 1 > 0)
+			if (this->_player.getPosY() - 1 >= 0 && checkCollision(this->_player.getPosX(), this->_player.getPosY() - 1, VERTICAL))
 				this->_player.setPosY(this->_player.getPosY() - 1);
 			break;
 		case 's':
-			if (this->_player.getPosY() + 1 < HEIGHT - 1)
+			if (this->_player.getPosY() + 1 < HEIGHT - 1 && checkCollision(this->_player.getPosX(), this->_player.getPosY() + 1, VERTICAL))
 				this->_player.setPosY(this->_player.getPosY() + 1);
 			break;
 		case 'd':
-			if (this->_player.getPosX() + 1 < LENGTH - 1)
+			if (this->_player.getPosX() + 1 < LENGTH - 1 && checkCollision(this->_player.getPosX() + 1, this->_player.getPosY(), HORIZONTAL))
 				this->_player.setPosX(this->_player.getPosX() + 1);
 			break;
 		case 'a':
-			if (this->_player.getPosX() - 1 > 0)
-				this->_player.setPosX(this->_player.getPosX() - 1);
+			//Fix error travel in walls
+			if (this->_player.getPosX() - 1 >= 0 && checkCollision(this->_player.getPosX() - 2, this->_player.getPosY(), HORIZONTAL))
+				this->_player.setPosX(this->_player.getPosX() - 2);
 			break;
 		case ' ':
 			if (attackSpeed > 5) {
@@ -334,15 +292,18 @@ void	Game::updateGame( void ) {
 	this->displayObstacle();
 	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
 		this->_obstacle[i].moveWall();
+		//To do delete Wall when inexistant
 	}
 
 	//Display Enemies
 
 	//Display Player & Check collisions
+	this->_player.updateInvincibility();
+	this->checkCollision(this->_player.getPosX(), this->_player.getPosY(), HORIZONTAL);
 	wattron(this->_board, A_BOLD);
 	this->displayPlayer();
 	wattroff(this->_board, A_BOLD);
-	this->checkCollision();
+	this->checkCollision(this->_player.getPosX(), this->_player.getPosY(), HORIZONTAL);
 
 	//Display & Update Projectile
 	this->updateRocket();
@@ -381,20 +342,34 @@ void	Game::updateRocket( void ) {
 	}
 }
 
-void	Game::checkCollision( void ) {
-	if (this->_player.getLife() == 0) {
-		this->_gameOver = true;
-		return ;
-	}
+bool	Game::checkCollision( int x, int y, int axis ) {
+	//check if the player is immune
+	if (this->_player.getInvincibility())
+		return (true);
 
-	size_t x = this->_player.getPosX();
-	size_t y = this->_player.getPosY();
-
+	//check if the player reach an obstacle
 	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
 		if (x == this->_obstacle[i].getPosX() && y == this->_obstacle[i].getPosY()) {
-			this->_player.setLife(this->_player.getLife() - 1);
-			//go behind the end of the wall
-			return ;
+			if (axis == HORIZONTAL)
+			this->_player.setPosX(x - 1);
+		return (false);
 		}
 	}
+
+	//check if the player take a hit
+	if (this->_player.getPosX() < 0) {
+		this->_player.setLife(this->_player.getLife() - 1);
+		//tp in correct place (not in a wall)
+		this->_player.setPosX(BASE_X_1);
+		this->_player.setPosY(BASE_Y_1);
+		this->_player.setInvincibility(5);
+	}
+
+	//check death of the player
+	if (this->_player.getLife() == 0) {
+		this->_gameOver = true;
+		return (false);
+	}
+
+	return (true);
 }

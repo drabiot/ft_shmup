@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:42:20 by tchartie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:57:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:25:18 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ Entity::Entity( void ) {
 
 Entity::~Entity( void ) {}
 
-size_t	Entity::getPosX( void ) {
+int	Entity::getPosX( void ) {
 	return (this->_posX);
 }
 
-size_t	Entity::getPosY( void ) {
+int	Entity::getPosY( void ) {
 	return (this->_posY);
 }
 
@@ -36,11 +36,11 @@ size_t	Entity::getMaxLife( void ) {
 	return (this->_maxLife);
 }
 
-void	Entity::setPosX( size_t newX ) {
+void	Entity::setPosX( int newX ) {
 	this->_posX = newX;
 }
 
-void	Entity::setPosY( size_t newY ) {
+void	Entity::setPosY( int newY ) {
 	this->_posY = newY;
 }
 

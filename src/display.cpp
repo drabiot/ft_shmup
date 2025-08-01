@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/07/31 18:34:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:37:27 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	Game::displayPlayer( void ) {
 void	Game::displayObstacle( void ) {
 	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
 		wattron(this->_board, COLOR_PAIR(FOREGROUND));
-		mvwprintw(this->_board, this->_obstacle[i].getPosY(), this->_obstacle[i].getPosX(), " ");
+		if (this->_obstacle[i].getPosX() >= 0)
+			mvwprintw(this->_board, this->_obstacle[i].getPosY(), this->_obstacle[i].getPosX(), " ");
 		wattroff(this->_board, COLOR_PAIR(FOREGROUND));
 	}
 }
@@ -83,6 +84,50 @@ void	Game::displayRocket( void ) {
 		else
     		mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "-");
 	}
+}
+
+void	Game::introGame( void ) {
+	this->clearBorder();
+
+	wattron(this->_board, COLOR_PAIR(PLAYER_1));
+	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 24 , "   _    _      _                               ");
+	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 24 , "  | |  | |    | |                              ");
+	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 24 , "  | |  | | ___| | ___ ___  _ __ ___   ___      ");
+	mvwprintw(this->_board, HEIGHT / 2 - 7, LENGTH / 2 - 24 , "  | |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\     ");
+	mvwprintw(this->_board, HEIGHT / 2 - 6, LENGTH / 2 - 24 , "  \\  /\\  /  __/ | (_| (_) | | | | | |  __/     ");
+	mvwprintw(this->_board, HEIGHT / 2 - 5, LENGTH / 2 - 24 , "   \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|     ");
+	mvwprintw(this->_board, HEIGHT / 2 - 4, LENGTH / 2 - 24 , "  __ _         _     _                        ");
+	mvwprintw(this->_board, HEIGHT / 2 - 3, LENGTH / 2 - 24 , " / _| |       | |   | |                        ");
+	mvwprintw(this->_board, HEIGHT / 2 - 2, LENGTH / 2 - 24 , "| |_| |_   ___| |__ | |_ _ __ ___  _   _ _ __  ");
+	mvwprintw(this->_board, HEIGHT / 2 - 1, LENGTH / 2 - 24 , "|  _| __| / __| '_ \\| __| '_ ` _ \\| | | | '_ \\ ");
+	mvwprintw(this->_board, HEIGHT / 2 + 0, LENGTH / 2 - 24 , "| | | |_  \\__ \\ | | | |_| | | | | | |_| | |_) |");
+	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 24 , "|_|  \\__| |___/_| |_|\\__|_| |_| |_|\\__,_| .__/ ");
+	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 24 , "      ______                            | |    ");
+	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 24 , "     |______|                           |_|    ");
+	wattroff(this->_board, COLOR_PAIR(PLAYER_1));
+
+	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 - 40, "Press 1: for Emojies");
+	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 + 20, "Press 2: for ASCII");
+
+	wattron(this->_board, A_BLINK);
+	mvwprintw(this->_board, HEIGHT / 2 + 12, LENGTH / 2 - 22, "*If this text don't blink select ASCII mode*");
+	wattroff(this->_board, A_BLINK);
+
+	chtype	input = this->getInput();
+	switch (input) {
+		case '1':
+			this->_emoji = true;
+			this->_start = true;
+			break;
+		case '2':
+			this->_emoji = false;
+			this->_start = true;
+			break;
+		default:
+			break;
+	}
+
+	this->refreshBorder();
 }
 
 void    Game::displayEnd( void ) {
