@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/01 16:37:27 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:41:15 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,30 @@ void	Game::displayBackground( void ) {
 
 	//Randomly Generate Background
 	if (!initialized) {
-        createBackgroundHills(backgroundBase, BASEF, BASEA, 25, "base");
-        createBackgroundHills(backgroundDetail, DETAILF, DETAILA, 20, "detail");
-        createBackgroundHills(backgroundFine, FINEF, FINEA, 15, "fine");
-        createBackgroundHills(backgroundFirst, FIRSTF, FIRSTA, 7, "first");
+        createBackgroundHills(backgroundBase, FREQ_BASE, AMP_BASE, HEIGHT_BASE, "base");
+        createBackgroundHills(backgroundDetail, FREQ_DETAIL, AMP_DETAIL, HEIGHT_DETAIL, "detail");
+        createBackgroundHills(backgroundFine, FREQ_FINE, AMP_FINE, HEIGHT_FINE, "fine");
+        createBackgroundHills(backgroundFirst, FREQ_FIRST, AMP_FIRST, HEIGHT_FIRST, "first");
 		initialized = true;
 	}
 
 	//Scroll Background
-    displayBackgroundHills(backgroundBase, "base", index[3], this->_board);
-    displayBackgroundHills(backgroundDetail, "detail", index[2], this->_board);
-    displayBackgroundHills(backgroundFine, "fine", index[1], this->_board);
-    displayBackgroundHills(backgroundFirst, "first", index[0], this->_board);
+    displayBackgroundHills(backgroundBase, "base", index[IDX_BASE], this->_board);
+    displayBackgroundHills(backgroundDetail, "detail", index[IDX_DETAIL], this->_board);
+    displayBackgroundHills(backgroundFine, "fine", index[IDX_FINE], this->_board);
+    displayBackgroundHills(backgroundFirst, "first", index[IDX_FIRST], this->_board);
+
+	int	frameRateBase = 15;
+	int	frameRateDetail = 7;
+	int	frameRateFine = 3;
 
     index[0]++;
-    if (index[0] % 15 == 0) ++index[3];
-    if (index[0] %  7 == 0) ++index[2];
-    if (index[0] %  3 == 0) ++index[1];
+    if (!(index[IDX_FIRST] % frameRateBase))
+		++index[IDX_BASE];
+    if (!(index[IDX_FIRST] %  frameRateDetail))
+		++index[IDX_DETAIL];
+    if (!(index[IDX_FIRST] %  frameRateFine))
+		++index[IDX_FINE];
 
 	//Create Upper & Lower Border
 	this->addBorder();
@@ -89,21 +96,24 @@ void	Game::displayRocket( void ) {
 void	Game::introGame( void ) {
 	this->clearBorder();
 
+	int	paddingHeight = -10;
+	int	paddingLength = 24;
+
 	wattron(this->_board, COLOR_PAIR(PLAYER_1));
-	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 24 , "   _    _      _                               ");
-	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 24 , "  | |  | |    | |                              ");
-	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 24 , "  | |  | | ___| | ___ ___  _ __ ___   ___      ");
-	mvwprintw(this->_board, HEIGHT / 2 - 7, LENGTH / 2 - 24 , "  | |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\     ");
-	mvwprintw(this->_board, HEIGHT / 2 - 6, LENGTH / 2 - 24 , "  \\  /\\  /  __/ | (_| (_) | | | | | |  __/     ");
-	mvwprintw(this->_board, HEIGHT / 2 - 5, LENGTH / 2 - 24 , "   \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|     ");
-	mvwprintw(this->_board, HEIGHT / 2 - 4, LENGTH / 2 - 24 , "  __ _         _     _                        ");
-	mvwprintw(this->_board, HEIGHT / 2 - 3, LENGTH / 2 - 24 , " / _| |       | |   | |                        ");
-	mvwprintw(this->_board, HEIGHT / 2 - 2, LENGTH / 2 - 24 , "| |_| |_   ___| |__ | |_ _ __ ___  _   _ _ __  ");
-	mvwprintw(this->_board, HEIGHT / 2 - 1, LENGTH / 2 - 24 , "|  _| __| / __| '_ \\| __| '_ ` _ \\| | | | '_ \\ ");
-	mvwprintw(this->_board, HEIGHT / 2 + 0, LENGTH / 2 - 24 , "| | | |_  \\__ \\ | | | |_| | | | | | |_| | |_) |");
-	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 24 , "|_|  \\__| |___/_| |_|\\__|_| |_| |_|\\__,_| .__/ ");
-	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 24 , "      ______                            | |    ");
-	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 24 , "     |______|                           |_|    ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "   _    _      _                               ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "  | |  | |    | |                              ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "  | |  | | ___| | ___ ___  _ __ ___   ___      ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "  | |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\     ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "  \\  /\\  /  __/ | (_| (_) | | | | | |  __/     ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "   \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|     ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "  __ _         _     _                        ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , " / _| |       | |   | |                        ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "| |_| |_   ___| |__ | |_ _ __ ___  _   _ _ __  ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "|  _| __| / __| '_ \\| __| '_ ` _ \\| | | | '_ \\ ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "| | | |_  \\__ \\ | | | |_| | | | | | |_| | |_) |");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "|_|  \\__| |___/_| |_|\\__|_| |_| |_|\\__,_| .__/ ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "      ______                            | |    ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength , "     |______|                           |_|    ");
 	wattroff(this->_board, COLOR_PAIR(PLAYER_1));
 
 	mvwprintw(this->_board, HEIGHT / 2 + 7, LENGTH / 2 - 40, "Press 1: for Emojies");
@@ -133,21 +143,24 @@ void	Game::introGame( void ) {
 void    Game::displayEnd( void ) {
     wattron(this->_board, A_BOLD);
 
-	mvwprintw(this->_board, HEIGHT / 2 - 10, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 - 9, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⢀⣴⣿⡶⠀⣾⣿⣿⡿⠟⠛⠁");
-	mvwprintw(this->_board, HEIGHT / 2 - 8, LENGTH / 2 - 20, "⠀⠀⢀⣴⣾⣿⡿⠿⠿⠿⠇⠀⠀⣸⣿⣿⣿⡆⠀⠀⢰⣿⣿⣿⣷⣼⣿⣿⣿⡿⢀⣿⣿⡿⠟⠛⠁  ");
-	mvwprintw(this->_board, HEIGHT / 2 - 7, LENGTH / 2 - 20, "⠀⣴⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⢠⣿⣿⣹⣿⣿⣿⣿⣿⣿⡏⢻⣿⣿⢿⣿⣿⠃⣼⣿⣯⣤⣴⣶⣿⡤⠀");
-	mvwprintw(this->_board, HEIGHT / 2 - 6, LENGTH / 2 - 20, "⣼⣿⠏⠀⣀⣠⣤⣶⣾⣷⠄⣰⣿⣿⡿⠿⠻⣿⣯⣸⣿⡿⠀⠀⠀⠁⣾⣿⡏⢠⣿⣿⠿⠛⠋⠉⠀⠀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 - 5, LENGTH / 2 - 20, "⣿⣿⠲⢿⣿⣿⣿⣿⡿⠋⢰⣿⣿⠋⠀⠀⠀⢻⣿⣿⣿⠇⠀⠀⠀⠀⠙⠛⠀⠀⠉⠁⠀⠀⠀⠀⠀  ");
-	mvwprintw(this->_board, HEIGHT / 2 - 4, LENGTH / 2 - 20, "⠹⢿⣷⣶⣿⣿⠿⠋⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ");
-	mvwprintw(this->_board, HEIGHT / 2 - 3, LENGTH / 2 - 20, "⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣦⣤⡀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 - 2, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣠⡇⢰⣶⣶⣾⡿⠷⣿⣿⣿⡟⠛⣉⣿⣿⣿⠆");
-	mvwprintw(this->_board, HEIGHT / 2 - 1, LENGTH / 2 - 20, "⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⡎⣿⣿⣦⠀⠀⠀⢀⣤⣾⠟⢀⣿⣿⡟⣁⠀⠀⣸⣿⣿⣤⣾⣿⡿⠛⠁⠀");
-	mvwprintw(this->_board, HEIGHT / 2 + 0, LENGTH / 2 - 20, "⠀⠀⠀⠀⣠⣾⣿⡿⠛⠉⢿⣦⠘⣿⣿⡆⠀⢠⣾⣿⠋⠀⣼⣿⣿⣿⠿⠷⢠⣿⣿⣿⠿⢻⣿⣧⠀⠀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 + 1, LENGTH / 2 - 20, "⠀⠀⠀⣴⣿⣿⠋⠀⠀⠀⢸⣿⣇⢹⣿⣷⣰⣿⣿⠃⠀⢠⣿⣿⢃⣀⣤⣤⣾⣿⡟⠀⠀⠀⢻⣿⣆⠀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 + 2, LENGTH / 2 - 20, "⠀⠀⠀⣿⣿⡇⠀⠀⢀⣴⣿⣿⡟⠀⣿⣿⣿⣿⠃⠀⠀⣾⣿⣿⡿⠿⠛⢛⣿⡟⠀⠀⠀⠀⠀⠻⠿⠀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 + 3, LENGTH / 2 - 20, "⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀");
-	mvwprintw(this->_board, HEIGHT / 2 + 4, LENGTH / 2 - 20, "⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+	int	paddingHeight = -10;
+	int	paddingLength = 20;
+
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⢀⣴⣿⡶⠀⣾⣿⣿⡿⠟⠛⠁");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⢀⣴⣾⣿⡿⠿⠿⠿⠇⠀⠀⣸⣿⣿⣿⡆⠀⠀⢰⣿⣿⣿⣷⣼⣿⣿⣿⡿⢀⣿⣿⡿⠟⠛⠁  ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⣴⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⢠⣿⣿⣹⣿⣿⣿⣿⣿⣿⡏⢻⣿⣿⢿⣿⣿⠃⣼⣿⣯⣤⣴⣶⣿⡤⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⣼⣿⠏⠀⣀⣠⣤⣶⣾⣷⠄⣰⣿⣿⡿⠿⠻⣿⣯⣸⣿⡿⠀⠀⠀⠁⣾⣿⡏⢠⣿⣿⠿⠛⠋⠉⠀⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⣿⣿⠲⢿⣿⣿⣿⣿⡿⠋⢰⣿⣿⠋⠀⠀⠀⢻⣿⣿⣿⠇⠀⠀⠀⠀⠙⠛⠀⠀⠉⠁⠀⠀⠀⠀⠀  ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠹⢿⣷⣶⣿⣿⠿⠋⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣦⣤⡀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣠⡇⢰⣶⣶⣾⡿⠷⣿⣿⣿⡟⠛⣉⣿⣿⣿⠆");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⡎⣿⣿⣦⠀⠀⠀⢀⣤⣾⠟⢀⣿⣿⡟⣁⠀⠀⣸⣿⣿⣤⣾⣿⡿⠛⠁⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠀⣠⣾⣿⡿⠛⠉⢿⣦⠘⣿⣿⡆⠀⢠⣾⣿⠋⠀⣼⣿⣿⣿⠿⠷⢠⣿⣿⣿⠿⢻⣿⣧⠀⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⣴⣿⣿⠋⠀⠀⠀⢸⣿⣇⢹⣿⣷⣰⣿⣿⠃⠀⢠⣿⣿⢃⣀⣤⣤⣾⣿⡟⠀⠀⠀⢻⣿⣆⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⣿⣿⡇⠀⠀⢀⣴⣿⣿⡟⠀⣿⣿⣿⣿⠃⠀⠀⣾⣿⣿⡿⠿⠛⢛⣿⡟⠀⠀⠀⠀⠀⠻⠿⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+	mvwprintw(this->_board, HEIGHT / 2 + ++paddingHeight, LENGTH / 2 - paddingLength, "⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
 
 	wattron(this->_board, A_BLINK);
 	mvwprintw(this->_board, HEIGHT / 2 + 6, LENGTH / 2 - 10, "Press any Key to Quit!");

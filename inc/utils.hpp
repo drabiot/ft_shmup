@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/01 16:01:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:39:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,25 @@ typedef std::string str;
 # define FINE           '*'
 # define FIRST          '@'
 
-# define BASEF          (2.0 * M_PI) / 300
-# define DETAILF        (2.0 * M_PI) / 150
-# define FINEF          (2.0 * M_PI) / 100
-# define FIRSTF         (2.0 * M_PI) / 50
+# define IDX_BASE		3
+# define IDX_DETAIL		2
+# define IDX_FINE		1
+# define IDX_FIRST		0
 
-# define BASEA          (HEIGHT / 5)
-# define DETAILA        (HEIGHT / 10)
-# define FINEA          (HEIGHT / 20)
-# define FIRSTA         (HEIGHT / 30)
+# define FREQ_BASE          (2.0 * M_PI) / 300
+# define FREQ_DETAIL        (2.0 * M_PI) / 150
+# define FREQ_FINE          (2.0 * M_PI) / 100
+# define FREQ_FIRST         (2.0 * M_PI) / 50
+
+# define AMP_BASE          (HEIGHT / 5)
+# define AMP_DETAIL        (HEIGHT / 10)
+# define AMP_FINE          (HEIGHT / 20)
+# define AMP_FIRST         (HEIGHT / 30)
+
+# define HEIGHT_BASE		25
+# define HEIGHT_DETAIL		20
+# define HEIGHT_FINE		15
+# define HEIGHT_FIRST		7
 
 /* Color */
 # define FOREGROUND		1
