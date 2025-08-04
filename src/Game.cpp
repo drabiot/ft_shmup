@@ -6,11 +6,13 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/01 16:43:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/04 23:05:49 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
+
+static void	redirectPos(int *x, int *y, std::vector<Wall> obstacle);
 
 Game::Game( void ) {
 	size_t	xMax;
@@ -195,8 +197,10 @@ bool	Game::createWall(str mapName) {
 			int origX = static_cast<int>(x * scaleX);
 			int origY = static_cast<int>(y * scaleY);
 
-			if (origX >= origWidth) origX = origWidth - 1;
-			if (origY >= origHeight) origY = origHeight - 1;
+			if (origX >= origWidth)
+				origX = origWidth - 1;
+			if (origY >= origHeight)
+				origY = origHeight - 1;
 
 			char c = originalMap[origY][origX];
 			if (c == this->_fillChar || c == this->_emptyChar)
@@ -237,7 +241,7 @@ void	Game::processInput( void ) {
 
 	switch (input) {
 		case 'w':
-			if (this->_player.getPosY() - 1 >= 0 && checkCollision(this->_player.getPosX(), this->_player.getPosY() - 1, VERTICAL))
+			if (this->_player.getPosY() - 1 > 0 && checkCollision(this->_player.getPosX(), this->_player.getPosY() - 1, VERTICAL))
 				this->_player.setPosY(this->_player.getPosY() - 1);
 			break;
 		case 's':
@@ -245,13 +249,12 @@ void	Game::processInput( void ) {
 				this->_player.setPosY(this->_player.getPosY() + 1);
 			break;
 		case 'd':
-			if (this->_player.getPosX() + 1 < LENGTH - 1 && checkCollision(this->_player.getPosX() + 1, this->_player.getPosY(), HORIZONTAL))
-				this->_player.setPosX(this->_player.getPosX() + 1);
+			if (this->_player.getPosX() + 2 < LENGTH - 1 && checkCollision(this->_player.getPosX() + 2, this->_player.getPosY(), HORIZONTAL))
+				this->_player.setPosX(this->_player.getPosX() + 2);
 			break;
 		case 'a':
-			//Fix error travel in walls
-			if (this->_player.getPosX() - 1 >= 0 && checkCollision(this->_player.getPosX() - 2, this->_player.getPosY(), HORIZONTAL))
-				this->_player.setPosX(this->_player.getPosX() - 2);
+			if (this->_player.getPosX() - 1 >= 0 && checkCollision(this->_player.getPosX(), this->_player.getPosY(), HORIZONTAL))
+				this->_player.setPosX(this->_player.getPosX() - 1);
 			break;
 		case ' ':
 			if (attackSpeed > 5) {
@@ -292,7 +295,10 @@ void	Game::updateGame( void ) {
 	this->displayObstacle();
 	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
 		this->_obstacle[i].moveWall();
-		//To do delete Wall when inexistant
+
+		//Delete Wall when inexistant
+		if (this->_obstacle[i].getPosX() > -(WIDTH * 2) && this->_obstacle[i].getPosX() < -WIDTH)
+			this->_obstacle.erase(this->_obstacle.begin() + i);
 	}
 
 	//Display Enemies
@@ -338,20 +344,27 @@ void	Game::removeRocket( Projectile oldRocket ) {
 void	Game::updateRocket( void ) {
 	this->_player.getPendingRocket(this->_rocket);
 	for (size_t i = 0; i < this->_rocket.size(); ++i) {
-    	this->_rocket[i].setPosX(this->_rocket[i].getPosX() + 1);
+		bool	hitWall = false;
+
+		for (size_t j = 0; j < this->_obstacle.size(); ++j) {
+			if (this->_rocket[i].getPosX() == this->_obstacle[j].getPosX() && this->_rocket[i].getPosY() == this->_obstacle[j].getPosY()) {
+				hitWall = true;
+				continue;
+			}
+		}
+		if (hitWall)
+			this->_rocket.erase(this->_rocket.begin() + i);
+		else
+    		this->_rocket[i].setPosX(this->_rocket[i].getPosX() + 1);
 	}
 }
 
 bool	Game::checkCollision( int x, int y, int axis ) {
-	//check if the player is immune
-	if (this->_player.getInvincibility())
-		return (true);
-
 	//check if the player reach an obstacle
 	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
 		if (x == this->_obstacle[i].getPosX() && y == this->_obstacle[i].getPosY()) {
 			if (axis == HORIZONTAL)
-			this->_player.setPosX(x - 1);
+				this->_player.setPosX(x - 1);
 		return (false);
 		}
 	}
@@ -359,9 +372,14 @@ bool	Game::checkCollision( int x, int y, int axis ) {
 	//check if the player take a hit
 	if (this->_player.getPosX() < 0) {
 		this->_player.setLife(this->_player.getLife() - 1);
-		//tp in correct place (not in a wall)
-		this->_player.setPosX(BASE_X_1);
-		this->_player.setPosY(BASE_Y_1);
+		
+		int newX = BASE_X_1;
+		int	newY = BASE_Y_1;
+
+		redirectPos(&newX, &newY, this->_obstacle);	//Fix Redir in Y axis if not spawn point
+
+		this->_player.setPosX(newX);
+		this->_player.setPosY(newY);
 		this->_player.setInvincibility(5);
 	}
 
@@ -372,4 +390,29 @@ bool	Game::checkCollision( int x, int y, int axis ) {
 	}
 
 	return (true);
+}
+
+static void	redirectPos(int *x, int *y, std::vector<Wall> obstacle) {
+	static bool obstacleBoard[HEIGHT][WIDTH];
+
+	//Init Actual Board
+	for (size_t i = 0; i < HEIGHT; ++i) {
+		for (size_t j = 0; j < WIDTH; ++j) {
+			obstacleBoard[i][j] = false;
+		}
+	}
+
+	//Look for Walls in the Actual Board
+	for (size_t i = 0; i < obstacle.size(); ++i) {
+		int	posX = obstacle[i].getPosX();
+		int posY = obstacle[i].getPosY();
+
+		if (posX > 0 && posX < WIDTH && posY > 0 && posY < HEIGHT)
+			obstacleBoard[posY][posX] = true;
+	}
+
+	while (obstacleBoard[*y][*x])
+		++(*x);
+
+		//Add y axis move
 }

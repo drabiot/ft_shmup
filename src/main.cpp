@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 22:32:51 by tchartie          #+#    #+#             */
-/*   Updated: 2025/07/24 15:13:54 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:53:41 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv) {
 			usleep(FRAME_DELAY);
 		}
 	
-	//End Menu with total Score & Time Survivec
+	//End Menu with total Score & Time Survive
 	game.endScreen();
 	scoreboard.endScreen();
 	getch();
