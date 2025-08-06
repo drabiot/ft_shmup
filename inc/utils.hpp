@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/06 19:49:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:13:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,26 @@ typedef std::string str;
 # define IDX_FINE		1
 # define IDX_FIRST		0
 
-# define FREQ_BASE          (2.0 * M_PI) / 300
-# define FREQ_DETAIL        (2.0 * M_PI) / 150
-# define FREQ_FINE          (2.0 * M_PI) / 100
-# define FREQ_FIRST         (2.0 * M_PI) / 50
+# define FREQ_BASE		(2.0 * M_PI) / 300
+# define FREQ_DETAIL	(2.0 * M_PI) / 150
+# define FREQ_FINE		(2.0 * M_PI) / 100
+# define FREQ_FIRST		(2.0 * M_PI) / 50
 
-# define AMP_BASE          (HEIGHT / 5)
-# define AMP_DETAIL        (HEIGHT / 10)
-# define AMP_FINE          (HEIGHT / 20)
-# define AMP_FIRST         (HEIGHT / 30)
+# define AMP_BASE		(HEIGHT / 5)
+# define AMP_DETAIL		(HEIGHT / 10)
+# define AMP_FINE		(HEIGHT / 20)
+# define AMP_FIRST		(HEIGHT / 30)
 
-# define HEIGHT_BASE		25
-# define HEIGHT_DETAIL		20
-# define HEIGHT_FINE		15
-# define HEIGHT_FIRST		7
+# define HEIGHT_BASE	25
+# define HEIGHT_DETAIL	20
+# define HEIGHT_FINE	15
+# define HEIGHT_FIRST	7
+
+/* Obstacle */
+# define CORN_BAT		"#"	
+# define HORI_BAT		"="
+# define VERT_BAT		"|"
+# define BASE_BAT		"o"
 
 /* Color */
 # define FOREGROUND		1
@@ -91,6 +97,13 @@ typedef std::string str;
 /* Players */
 # define BASE_X_1		30
 # define BASE_Y_1		20
+
+# define EMOJI_PLAYER	"🛩️"
+# define BASE_PLAYER	">"
+
+/* Projectile */
+# define P_ROCKET		"-"
+# define P_MAX_ROCKET	"="
 
 double  ft_sin( double x );
 

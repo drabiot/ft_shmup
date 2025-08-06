@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/06 19:54:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:23:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,28 +68,65 @@ void	Game::displayBackground( void ) {
 void	Game::displayPlayer( void ) {
 	wattron(this->_board, COLOR_PAIR(PLAYER_1));
 	if (this->_emoji)
-		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), "🛩️");
+		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), EMOJI_PLAYER);
 	else
-		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), ">");
+		mvwprintw(this->_board, this->_player.getPosY(), this->_player.getPosX(), BASE_PLAYER);
 	wattroff(this->_board, COLOR_PAIR(PLAYER_1));
 	this->_player.updateTime();
 }
 
 void	Game::displayObstacle( void ) {
+	static bool obstacleBoard[HEIGHT][WIDTH];
+
+	//Init Actual Board
+	for (int i = 0; i < HEIGHT; ++i)
+		for (int j = 0; j < WIDTH; ++j)
+			obstacleBoard[i][j] = false;
+
+	//Look for Walls in the Actual Board
 	for (size_t i = 0; i < this->_obstacle.size(); ++i) {
-		wattron(this->_board, COLOR_PAIR(FOREGROUND));
-		if (this->_obstacle[i].getPosX() >= 0)
-			mvwprintw(this->_board, this->_obstacle[i].getPosY(), this->_obstacle[i].getPosX(), " ");
-		wattroff(this->_board, COLOR_PAIR(FOREGROUND));
+		int posX = this->_obstacle[i].getPosX();
+		int posY = this->_obstacle[i].getPosY();
+
+		if (posX >= 0 && posX < WIDTH && posY >= 0 && posY < HEIGHT)
+			obstacleBoard[posY][posX] = true;
+	}
+
+	for (size_t i = 0; i < HEIGHT; ++i) {
+		for (size_t j = 0; j < WIDTH; ++j) {
+			if (!obstacleBoard[i][j] || i <= 0 || i >= HEIGHT - 1 || j <= 0 || j >= WIDTH - 1)
+				continue;
+
+			bool up    = (i > 0) && obstacleBoard[i - 1][j];
+			bool down  = (i < HEIGHT - 1) && obstacleBoard[i + 1][j];
+			bool left  = (j > 0) && obstacleBoard[i][j - 1];
+			bool right = (j < WIDTH - 1) && obstacleBoard[i][j + 1];
+
+			// Check if it's a corner
+			if ((down && right && !up && !left) ||
+				(down && left && !up && !right) ||
+				(up && right && !down && !left) ||
+				(up && left && !down && !right))
+				mvwprintw(this->_board, i, j, CORN_BAT);
+			// Check if it's a vertical border
+			else if (up && down && (!left || !right))
+				mvwprintw(this->_board, i, j, VERT_BAT);
+			// Check if it's a horizontal border
+			else if (left && right && (!up || !down))
+				mvwprintw(this->_board, i, j, HORI_BAT);
+			// Otherwise, just a regular wall
+			else
+				mvwprintw(this->_board, i, j, BASE_BAT);
+		}
 	}
 }
 
 void	Game::displayRocket( void ) {
 	for (size_t i = 0; i < this->_rocket.size(); ++i) {
 		if (this->_rocket[i].getDamage() == 5)
-			mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "=");
+			mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), P_MAX_ROCKET);
 		else
-    		mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), "-");
+    		mvwprintw(this->_board, this->_rocket[i].getPosY(), this->_rocket[i].getPosX(), P_ROCKET);
 	}
 }
 
