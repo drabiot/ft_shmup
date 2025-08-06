@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 23:03:10 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/04 23:05:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:52:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -392,27 +392,60 @@ bool	Game::checkCollision( int x, int y, int axis ) {
 	return (true);
 }
 
-static void	redirectPos(int *x, int *y, std::vector<Wall> obstacle) {
+static void redirectPos(int* x, int* y, std::vector<Wall> obstacle) {
 	static bool obstacleBoard[HEIGHT][WIDTH];
 
 	//Init Actual Board
-	for (size_t i = 0; i < HEIGHT; ++i) {
-		for (size_t j = 0; j < WIDTH; ++j) {
+	for (int i = 0; i < HEIGHT; ++i)
+		for (int j = 0; j < WIDTH; ++j)
 			obstacleBoard[i][j] = false;
-		}
-	}
 
 	//Look for Walls in the Actual Board
 	for (size_t i = 0; i < obstacle.size(); ++i) {
-		int	posX = obstacle[i].getPosX();
+		int posX = obstacle[i].getPosX();
 		int posY = obstacle[i].getPosY();
 
-		if (posX > 0 && posX < WIDTH && posY > 0 && posY < HEIGHT)
+		if (posX >= 0 && posX < WIDTH && posY >= 0 && posY < HEIGHT)
 			obstacleBoard[posY][posX] = true;
 	}
 
-	while (obstacleBoard[*y][*x])
-		++(*x);
+	//Check if the Initial Respawn Point is available
+	if (!obstacleBoard[*y][*x])
+		return;
 
-		//Add y axis move
+	//Check for the best Respawn Point
+	bool visited[HEIGHT][WIDTH];
+	for (int i = 0; i < HEIGHT; ++i)
+		for (int j = 0; j < WIDTH; ++j)
+			visited[i][j] = false;
+
+	const int dx[8] = { 1, -1, 0, 0, 1, -1, 1, -1 };
+	const int dy[8] = { 0, 0, 1, -1, 1, -1, -1, 1 };
+
+	std::queue< std::pair<int, int> > q;
+	q.push(std::make_pair(*x, *y));
+	visited[*y][*x] = true;
+
+	while (!q.empty()) {
+		std::pair<int, int> current = q.front();
+		q.pop();
+
+		for (int dir = 0; dir < 8; ++dir) {
+			int newX = current.first + dx[dir];
+			int newY = current.second + dy[dir];
+
+			if (newX >= 0 && newX < WIDTH && newY >= 0 && newY < HEIGHT && !visited[newY][newX]) {
+				visited[newY][newX] = true;
+
+				if (!obstacleBoard[newY][newX]) {
+					*x = newX;
+					*y = newY;
+					return;
+				}
+
+				q.push(std::make_pair(newX, newY));
+			}
+		}
+	}
 }
+

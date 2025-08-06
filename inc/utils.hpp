@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:08:31 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/04 21:39:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/06 19:49:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <ctime>
 # include <sstream>
 # include <vector>
+# include <queue>
 # include <iomanip>
 # include <fstream>
 
