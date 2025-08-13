@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:07:28 by tchartie          #+#    #+#             */
-/*   Updated: 2025/08/06 20:23:30 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/08/13 18:54:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void	Game::displayObstacle( void ) {
 			else if (left && right && (!up || !down))
 				mvwprintw(this->_board, i, j, HORI_BAT);
 			// Otherwise, just a regular wall
+			else if (i % 4 == 0)
+				mvwprintw(this->_board, i, j, HORI_BAT);
 			else
 				mvwprintw(this->_board, i, j, BASE_BAT);
 		}
